@@ -9,20 +9,23 @@ export function getSelection (element) {
     } 
     else {
 		let document = element.ownerDocument;
-		var selection = document.getSelection();
+		let selection = document.getSelection();
 		if (!selection.rangeCount) return { start: 0, end: 0 };
 
-		var range = selection.getRangeAt(0);
-        var start = range.startOffset;
-        var end = range.endOffset;
+		let range = selection.getRangeAt(0);
+        let start = range.startOffset;
+        let end = range.endOffset;
 		if(range.startContainer != range.endContainer) {
     // 		toDo: replace common ancestor value
 		}
 		let domTextEditor = element;
-        let nodePos = getDomPosition({ domTextEditor, target: range.startContainer.parentElement, start, end });
+		if (!domTextEditor.htmlString){
+			domTextEditor = element.closest('[contenteditable]');
+		}
+        let nodePos = getDomPosition({ string: domTextEditor.htmlString, target: range.startContainer.parentElement, position: 'afterbegin'});
         if (nodePos){
-            start = nodePos.start;
-            end = nodePos.end;
+            start = start + nodePos.start;
+            end = end + nodePos.end;
         }
 		return { start, end, range };
     }
@@ -116,151 +119,287 @@ const contenteditable = {
 
 };
 
+String.prototype.customSplice = function(index, absIndex, string) {
+    return this.slice(0, index) + string + this.slice(index + Math.abs(absIndex));
+};
 
-
-let space = "\u{0020}|\u{0009}";
-let allAttributeName = `[a-z0-9-_]+?`;
-
-let sps = `(${space})*?`;
-let spa = `(${space})+?`;
-let tgs = `(?:<(?<tagName>[a-z0-9]+?))`;
-let getEndTag = tagName => `(?:<(?<isClosing>${sps}\/${sps})?${tagName}${sps})`;
-
-const idSearch = 'element_id=';
-const getRegAttribute = (attributeName) =>
-	`(${spa}(?:(?:${attributeName})((?:="[^"]*?")|${space}|>)))`;
-
-let at = getRegAttribute(allAttributeName);
-
-let the = `${sps}(?<tagSlash>\/)?${sps}>`;
-
-let target;
-let tagName;
-let tagStPos;
-let tagStAfPos;
-let tagStClPos;
-let tagStClAfPos;
-let tagEnPos;
-let tagEnClAfPos;
-
-export function getDomPosition({ domTextEditor, target, start, end }) {
-	target = target.getAttribute('element_id');
-// 	let {tagStClAfPos} = findStartTagById(domTextEditor, target);
-
-	if(findStartTagById(domTextEditor, target))
-		findClosingTag(domTextEditor, target);
-	else return;
-
-	start = tagStClAfPos + start;
-	end = tagStClAfPos + end;
-	return {start, end};
-}
-
-export function getWholeElement(domTextEditor, target) {
-	
-	if(findStartTagById(domTextEditor, target)) {
-		findClosingTag(domTextEditor, target);
-		return { start: tagStPos, end: tagEnClAfPos || tagStClAfPos };
-	}
-	else
-		return false;
-}
-
-export function findStartTagById(domTextEditor, target) {
-	try {
-    	let sch = `(?:${sps}element_id\=\"${target}\"${sps})`;
-    	let reg = `(?<tagWhole>${tgs}${at}*?${sch}${at}*?${the})`;
-    	let tagStart = domTextEditor.htmlString.match(new RegExp(reg, "is"));
+export function getStringPosition(str, start, end) {
+    let response = {};
+    let selection = [start];
+    // if (start != end) {
+    //     selection = [start, end];
+    // }
     
-    	if(!tagStart) return false;
-    // 		throw new Error('element is not valid or can not be found');
-    
-    	tagName = tagStart.groups.tagName.toUpperCase();
-    
-    	tagStPos = tagStart.index;
-    	tagStAfPos = tagStart.index + tagName.length + 1;
-    	tagStClPos = tagStart.index + tagStart.groups.tagWhole.length - 1 - (tagStart.groups.tagSlash ? 1 : 0);
-    	// haveClosingTag = !tagStart.groups.tagSlash;
-    	tagStClAfPos = tagStart.index + tagStart.groups.tagWhole.length;
-    // 	tagNameEnd = tagStAfPos + tagName.length;
-    	// if it's like <img />
-    	if(tagStart.groups.tagSlash) {
-    		tagEnPos = tagStClPos;
-    		tagEnClAfPos = tagStClAfPos;
-    		// isOmission = true; // if the tag doesn't have closing counterpart
-    	}
-    // 	return true;
-    	return {tagName, tagStPos, tagStAfPos, tagStClPos, tagStClAfPos, tagEnPos, tagEnClAfPos};
-	} catch {
-	    
-	}
+    for (let pos of selection) {
+        let startString = str.substr(0, pos);
+        let endString = str.substr(pos);
+        let angleStart = startString.lastIndexOf("<");
+        let angleEnd = startString.lastIndexOf(">");
+        let endStringAngleEnd = endString.indexOf(">");
+        let element, position, nodeStart, nodeEnd, startNode, type;
+        if (angleEnd > angleStart) {
+            let string = str.customSplice(start, 0, '<findelement></findelement>');
+            let newDom = domParser(string);
+            let findEl = newDom.querySelector('findelement');
+            if (findEl) {
+                let insert = getInsertPosition(findEl);
+                element = insert.target;
+                position = insert.position;
+                type = 'insertAdjacent';
+                if(!position)
+                    type = 'textNode';
+                if (type == 'textNode' || type == 'afterbegin');
+                    nodeStart = start - angleEnd - 1;
+            }
+            findEl.remove();
+        }
+        else {
+            let node = str.slice(angleStart, startString.length + endStringAngleEnd + 1);
+            if (node.startsWith("</")) {
+                startNode = node.slice(0, 1) + node.slice(2);
+                startNode = startNode.substr(0, startNode.length - 1);
+                nodeStart = startString.lastIndexOf(startNode);
+                let endString1 = str.substr(nodeStart);
+                let end = endString1.indexOf(">");
+                nodeEnd = nodeStart + end + 1;
+                type = 'isEndTag';
+            }
+            else {
+                nodeEnd = startString.length + endStringAngleEnd + 1;
+                startNode = node;
+                nodeStart = angleStart;
+                type = 'isStartTag';
+            }
+            if (nodeEnd > 0) {
+                let string = str.customSplice(nodeEnd - 1, 0, ' findelement');
+                let newDom = domParser(string);
+                element = newDom.querySelector('[findelement]');
+                if (type == "isEndTag")
+                    element = element.parentElement;
+                if (!element && newDom.tagName == 'HTML')
+                    element = newDom;
+                element.removeAttribute('findelement');
+            }
+            else {
+                let string = str.customSplice(angleStart, 0, '<findelement></findelement>');
+                let newDom = domParser(string);
+                element = newDom.querySelector('findelement');
+                if (element) {
+                    let insert = getInsertPosition(element);
+                    element = insert.target.parentElement;
+                    position = insert.position;
+                    if(position == 'afterend')
+                        element = element.parentElement;
+                    type = 'innerHTML';
+                }
+                if (!element) {
+                    console.log('Could not find element');
+                }
+            }
+        }
+        
+        if (element) {
+            response.element = element;
+            response.path = cssPath(element);
+            response.position = position;
+            response.start = nodeStart;
+            response.end = nodeEnd;
+            response.type = type;
+        }
+
+    }
+
+    console.log(response);
+    return response;
+    // findPosFromDom({ str, selector: path, value: 'g' });
 }
 
-export function findClosingTag(domTextEditor, target) {
-	let match = domTextEditor.htmlString.substr(tagStClAfPos)
-		.matchAll(new RegExp(`(?<tagWhole>${getEndTag(tagName)}${at}*?${the})`, 'gi'));
-
-	if(!match) throw new Error('can not find any closing tag');
-
-	let nest = 0;
-
-	for(let i of match) {
-		if(i.groups.isClosing) {
-			if(!nest) {
-				tagEnPos = tagStClAfPos + i.index;
-				tagEnClAfPos = tagStClAfPos + i.index + i[0].length;
-				// return true;
-	            return { tagEnPos, tagEnClAfPos };
-			}
-			else
-				nest--;
-		}
-		else
-			nest++;
-	}
-	throw new Error('closing tag and openning tag order does not match');
+function getInsertPosition(element){
+    let target, position;
+    let previousSibling = element.previousSibling;
+    let nextSibling = element.nextSibling;
+    if (previousSibling || nextSibling) {
+        if (!previousSibling) {
+            target = element.parentElement;
+            position = 'afterbegin';
+        }
+        else if (!nextSibling) {
+            target = element.parentElement;
+            position = 'beforend';
+        }
+        else if (previousSibling && previousSibling.nodeType == 1) {
+            target = previousSibling;
+            position = 'afterend';
+        }
+        else if (nextSibling && nextSibling.nodeType == 1) {
+            target = element.parentElement;
+            position = 'beforebegin';
+        }
+        else {
+            target = element.parentElement;
+        }
+    }
+    else {
+        target = element.parentElement;
+        position = 'afterbegin';
+    }
+    return {target, position};
 }
 
-export function findElByPos(domTextEditor, pos) {
-	let pos1 = pos - idSearch.length;
-	let pos2 = pos + idSearch.length;
+export function getDomPosition({string, target, position, attribute, property, value}) {
+    try {
+        let selector = cssPath(target, '[contenteditable]');
+        let dom = domParser(string);
+        let element = dom.querySelector(selector);
+        let findEl = document.createElement('findelement');
+        let start = 0, end = 0;
+        
+        if (position) {
+            element.insertAdjacentElement(position, findEl);
+            start = getElementPosition(dom, string, position);
+        }
+        else if (attribute) {
+            if (!element.hasAttribute(attribute)){
+                element.setAttribute('findelement', '');
+		        if (dom.tagName == 'HTML')
+                	start = dom.outerHTML.indexOf("findelement");
+		        else
+                	start = dom.innerHTML.indexOf("findelement");
+            }
+            else {
+                let elString = element.outerHTML;
+                let attrValue = element.getAttribute(attribute);
+                let attrStart = elString.indexOf(` ${attribute}=`) + 1;
+            	element.insertAdjacentElement('beforebegin', findEl);
+            	start = getElementPosition(dom, string, 'beforebegin');
+                start = start + attrStart;
+                end = start + attrValue.length + 2;
+                if (attribute == 'style') {
+                    element.style[property] = value;
+                    value = element.getAttribute(attribute);
+                }
+                else if (attribute == 'class') {
+                    let {prop, val} = value.split(':');
+                    if (prop && val){
+                        if (attrValue.includes(`${prop}:`)){
+                            let propStart = attrValue.indexOf(`${prop}:`);
+                            let propString = attrValue.substr(propStart)
+                            let propEnd = propString.indexOf(" ");
+                            if (propEnd > 0)
+                                propString = propString.slice(0, propEnd);
+                            element.classList.remove(propString)
+                        }
+                    }
+                    element.classList.add(value);
+                    value = element.getAttribute(attribute); 
+                }
+            }
+        }
+        else if (value) {
+            element.insertAdjacentElement('afterbegin', findEl);
+            let length = element.innerHTML.length;
+            start = getElementPosition(dom);
+            end = start + length;
+        }
+        else {
+            element.insertAdjacentElement('beforebegin', findEl);
+            start = getElementPosition(dom);
+        }
 
-	pos1 = domTextEditor.htmlString.indexOf(idSearch, pos1 + idSearch.length);
-	if(pos1 !== -1 && isPosOnEl(domTextEditor, pos1, pos))
-		return {target, tagStClAfPos};
-
-	while(true) {
-		pos2 = domTextEditor.htmlString.lastIndexOf(idSearch, pos2 - idSearch.length);
-
-		if(pos2 !== -1) {
-			if(isPosOnEl(domTextEditor, pos2, pos))
-				return {target, tagStClAfPos};
-		}
-		else return false;
-	}
-
+        end = start + end;
+        console.log('findindom', start);
+        return {start, end, value};
+    }
+    catch (e){
+        console.log(e);
+    }
 }
 
-function isPosOnEl(domTextEditor, elementIdPos, pos) {
-	target = getId(domTextEditor, elementIdPos + idSearch.length);
+function getElementPosition(dom, string, position) {
+    let start, angle, documentTypeAngles;
 
-	if(!findStartTagById(domTextEditor, target))
-		return false;
+    if (dom.tagName == 'HTML')
+    	start = dom.outerHTML.indexOf("<findelement></findelement>");
+    else
+    	start = dom.innerHTML.indexOf("<findelement></findelement>");
+    let domString = dom.outerHTML.substring(0, start);
+    if (position == 'afterbegin' || position == 'afterend')
+    	angle = '>'
+    if (position == 'beforebegin' || position == 'beforeend')
+    	angle = '<'
+    	start += 1;
 
-	findClosingTag(domTextEditor, target);
-	let tagStartPos = tagStPos;
-	let tagEndPos = tagEnClAfPos || tagStClAfPos;
-
-	if(pos > tagStartPos && pos < tagEndPos) {
-		return true;
-	}
+    if (dom.tagName == "HTML") {
+    	let htmlIndex = string.indexOf('<html');
+    	let documentType = string.substring(0, htmlIndex)
+    	documentTypeAngles = documentType.split(angle).length -1;
+    }
+    let angles = domString.split(angle);;
+    let angleLength = angles.length -1;
+    if (documentTypeAngles)
+    	angleLength += documentTypeAngles;
+    let elStart = getPosition(string, angle, angleLength)
+    elStart += 1;
+    return elStart;
 }
 
-function getId(domTextEditor, pos) {
-	let attWrapper = domTextEditor.htmlString[pos];
-	let endWrapper = domTextEditor.htmlString.indexOf(attWrapper, pos + 1);
-	return domTextEditor.htmlString.substring(pos + 1, endWrapper);
+
+function getPosition(string, subString, index) {
+  return string.split(subString, index).join(subString).length;
+}
+
+function cssPath(node, container = 'HTML') {
+    let pathSplits = [];
+    do {
+        if (!node || !node.tagName) return false;
+        let pathSplit = node.tagName.toLowerCase();
+        if (node.id) pathSplit += "#" + node.id;
+
+        if (node.classList.length) {
+            node.classList.forEach((item) => {
+                if (item.indexOf(":") === -1) pathSplit += "." + item;
+            });
+        }
+
+        if (node.parentNode) {
+            let index = Array.prototype.indexOf.call(
+                node.parentNode.children,
+                node
+            );
+            pathSplit += `:nth-child(${index + 1})`;
+        }
+
+        pathSplits.unshift(pathSplit);
+        node = node.parentNode;
+        if (node.tagName == "HTML" || node.nodeName == "#document" || node.hasAttribute('contenteditable'))
+        	node = ''
+    } while (node);
+    return pathSplits.join(" > ");
+}
+
+export function domParser(str) {
+    let mainTag = str.match(/\<(?<tag>[a-z0-9]+)(.*?)?\>/).groups.tag;
+    if (!mainTag)
+        throw new Error('find position: can not find the main tag');
+
+    let doc;
+    switch (mainTag) {
+        case 'html':
+            doc = new DOMParser().parseFromString(str, "text/html");
+            return doc.documentElement;
+        case 'body':
+            doc = new DOMParser().parseFromString(str, "text/html");
+            return doc.body;
+        case 'head':
+            doc = new DOMParser().parseFromString(str, "text/html");
+            return doc.head;
+
+        default:
+            let con = document.createElement('div');
+            con.innerHTML = str;
+            return con;
+    }
 }
 
 
-export default {getSelection, setSelection, hasSelection, processSelection, findElByPos, getDomPosition, getWholeElement, findStartTagById, findClosingTag};
+export default {getSelection, setSelection, hasSelection, processSelection, getDomPosition, getStringPosition, domParser};
