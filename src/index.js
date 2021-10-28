@@ -1,6 +1,11 @@
 /*globals Node*/
+import {cssPath, domParser} from '@cocreate/utils';
 
-export function getSelection (element) {
+String.prototype.customSplice = function(index, absIndex, string) {
+    return this.slice(0, index) + string + this.slice(index + Math.abs(absIndex));
+};
+
+export function getSelection(element) {
     if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
         return {
             start: element.selectionStart,
@@ -8,13 +13,23 @@ export function getSelection (element) {
         };
     } 
     else {
-		let document = element.ownerDocument;
-		let selection = document.getSelection();
+		let Document = element.ownerDocument;
+		let selection = Document.getSelection();
 		if (!selection.rangeCount) return { start: 0, end: 0 };
 
 		let range = selection.getRangeAt(0);
         let start = range.startOffset;
         let end = range.endOffset;
+        let previousSibling = range.startContainer.previousSibling
+		if(previousSibling && previousSibling.nodeType == 3) {
+			let length = 0;
+			do {
+				length += previousSibling.length;
+				previousSibling = previousSibling.previousSibling;
+			} while (previousSibling);
+			start += length
+			end += length
+		}
 		if(range.startContainer != range.endContainer) {
     // 		toDo: replace common ancestor value
 		}
@@ -22,12 +37,25 @@ export function getSelection (element) {
 		if (!domTextEditor.htmlString){
 			domTextEditor = element.closest('[contenteditable]');
 		}
-        let nodePos = getDomPosition({ string: domTextEditor.htmlString, target: range.startContainer.parentElement, position: 'afterbegin'});
-        if (nodePos){
-            start = start + nodePos.start;
-            end = end + nodePos.end;
-        }
-		return { start, end, range };
+		let elementStart = start, elementEnd = end;
+		if (domTextEditor){
+            let nodePos = getStringPosition({ string: domTextEditor.htmlString, target: range.startContainer.parentElement, position: 'afterbegin'});
+            if (nodePos){
+                elementStart = nodePos.start
+                elementEnd = nodePos.end
+                start = start + nodePos.start;
+                end = end + nodePos.end;
+            }
+		}
+        let rangeObj = {
+        	startOffset: range.startOffset, 
+        	endOffset: range.endOffset, 
+        	startContainer: range.startContainer.parentElement, 
+        	endContainer: range.endContainer.parentElement,
+        	elementStart,
+        	elementEnd
+        };
+		return { start, end, range: rangeObj};
     }
     
 }
@@ -58,21 +86,34 @@ export function setSelection(element, start, end, range) {
         element.selectionEnd = end;
     } 
     else {
-    // 	if (document.activeElement !== element) return;
-    	if (range.commonAncestorContainer) {
-    	    let prevElement = range.commonAncestorContainer;
-    	    if (prevElement.nodeName == '#text')
-    	        prevElement = range.commonAncestorContainer.parentElement;
-    	    if (prevElement !== element) return;
-    	}
-    	let document = element.ownerDocument;
-    	var selection = document.getSelection();
-    	var range = contenteditable._cloneRangeByPosition(element, start, end);
+        if (!range) return;
+    	let Document = element.ownerDocument;
+    	let startOffset = start - range.elementStart;
+    	let endOffset = end - range.elementEnd;
+		let startContainer = getContainer(range.startContainer, startOffset);
+		let endContainer = getContainer(range.endContainer, endOffset);
+    	
+    	let selection = Document.getSelection();
     	selection.removeAllRanges();
-    	selection.addRange(range);
-    }
+		const nrange = Document.createRange();
+		nrange.setStart(startContainer, startOffset);
+		nrange.setEnd(endContainer, endOffset);
+	    selection.addRange(nrange);
+	}
 }
 
+function getContainer(element, offset){
+	let nodeLengths = 0;
+	for (let node of element.childNodes){
+		if (node.nodeType == 3) {
+			let length = node.length + nodeLengths;
+			if (length >= offset)
+				return node;
+			else
+				nodeLengths += length;
+		}
+	}
+}
 
 export function hasSelection(el) {
 	let { start, end } = getSelection(el);
@@ -81,49 +122,7 @@ export function hasSelection(el) {
 	}
 }
 
-const contenteditable = {	
-	_cloneRangeByPosition: function(element, start, end, range) {
-		if (!range) {
-			range = document.createRange();
-			range.selectNode(element);
-			range.setStart(element, 0);
-			this.start = start;
-			this.end = end;
-		}
-
-		if (element && (this.start > 0 || this.end > 0)) {
-			if (element.nodeType === Node.TEXT_NODE) {
-
-				if (element.textContent.length < this.start) this.start -= element.textContent.length;
-				else if (this.start > 0) {
-					range.setStart(element, this.start);
-					this.start = 0;
-				}
-
-				if (element.textContent.length < this.end) this.end -= element.textContent.length;
-				else if (this.end > 0) {
-					range.setEnd(element, this.end);
-					this.end = 0;
-				}
-			}
-			else {
-				for (var lp = 0; lp < element.childNodes.length; lp++) {
-					range = this._cloneRangeByPosition(element.childNodes[lp], this.start, this.end, range);
-					if (this.start === 0 && this.end === 0) break;
-				}
-			}
-		}
-
-		return range;
-	},
-
-};
-
-String.prototype.customSplice = function(index, absIndex, string) {
-    return this.slice(0, index) + string + this.slice(index + Math.abs(absIndex));
-};
-
-export function getStringPosition(str, start, end) {
+export function getElementPosition(str, start, end) {
     let response = {};
     let selection = [start];
     // if (start != end) {
@@ -150,8 +149,8 @@ export function getStringPosition(str, start, end) {
                     type = 'textNode';
                 if (type == 'textNode' || type == 'afterbegin');
                     nodeStart = start - angleEnd - 1;
+                findEl.remove();
             }
-            findEl.remove();
         }
         else {
             let node = str.slice(angleStart, startString.length + endStringAngleEnd + 1);
@@ -208,10 +207,7 @@ export function getStringPosition(str, start, end) {
         }
 
     }
-
-    console.log(response);
     return response;
-    // findPosFromDom({ str, selector: path, value: 'g' });
 }
 
 function getInsertPosition(element){
@@ -233,7 +229,7 @@ function getInsertPosition(element){
         }
         else if (nextSibling && nextSibling.nodeType == 1) {
             target = element.parentElement;
-            position = 'beforebegin';
+            position = 'afterbegin';
         }
         else {
             target = element.parentElement;
@@ -246,160 +242,140 @@ function getInsertPosition(element){
     return {target, position};
 }
 
-export function getDomPosition({string, target, position, attribute, property, value}) {
+export function getStringPosition({string, target, position, attribute, property, value}) {
     try {
         let selector = cssPath(target, '[contenteditable]');
         let dom = domParser(string);
         let element = dom.querySelector(selector);
-        let findEl = document.createElement('findelement');
+        if (!element){
+            console.log('element could not be found using selector:', selector)
+        }
         let start = 0, end = 0;
         
         if (position) {
-            element.insertAdjacentElement(position, findEl);
-            start = getElementPosition(dom, string, position);
+            if (position == 'beforebegin')
+                start = getElFromString(dom, string, element, position, true);
+            else
+            start = getElFromString(dom, string, element, position);
+            end = start;
         }
         else if (attribute) {
             if (!element.hasAttribute(attribute)){
-                element.setAttribute('findelement', '');
-		        if (dom.tagName == 'HTML')
-                	start = dom.outerHTML.indexOf("findelement");
-		        else
-                	start = dom.innerHTML.indexOf("findelement");
+            	start = getElFromString(dom, string, element, 'afterbegin') - 1;
+                end = start;
             }
             else {
-                let elString = element.outerHTML;
+            	start = getElFromString(dom, string, element, 'beforebegin');
+                let elString = string.substr(start);
                 let attrValue = element.getAttribute(attribute);
-                let attrStart = elString.indexOf(` ${attribute}=`) + 1;
-            	element.insertAdjacentElement('beforebegin', findEl);
-            	start = getElementPosition(dom, string, 'beforebegin');
+                let attrStart = elString.indexOf(` ${attribute}=`);
                 start = start + attrStart;
-                end = start + attrValue.length + 2;
                 if (attribute == 'style') {
                     element.style[property] = value;
                     value = element.getAttribute(attribute);
                 }
                 else if (attribute == 'class') {
-                    let {prop, val} = value.split(':');
+                    let [prop, val] = value.split(':');
                     if (prop && val){
                         if (attrValue.includes(`${prop}:`)){
                             let propStart = attrValue.indexOf(`${prop}:`);
-                            let propString = attrValue.substr(propStart)
+                            let propString = attrValue.substr(propStart);
                             let propEnd = propString.indexOf(" ");
                             if (propEnd > 0)
                                 propString = propString.slice(0, propEnd);
-                            element.classList.remove(propString)
+                            element.classList.remove(propString);
                         }
                     }
                     element.classList.add(value);
                     value = element.getAttribute(attribute); 
                 }
+                else {
+                    element.setAttribute(attribute, value)
+                    value = element.getAttribute(attribute); 
+                }
+                end = start + attribute.length + attrValue.length + 4;
             }
         }
         else if (value) {
-            element.insertAdjacentElement('afterbegin', findEl);
+            start = getElFromString(dom, string, element, 'afterbegin');
             let length = element.innerHTML.length;
-            start = getElementPosition(dom);
             end = start + length;
         }
         else {
-            element.insertAdjacentElement('beforebegin', findEl);
-            start = getElementPosition(dom);
+            start = getElFromString(dom, string, element, 'beforebegin');
+            end = getElFromString(dom, string, element, 'afterend', true);
         }
 
-        end = start + end;
-        console.log('findindom', start);
-        return {start, end, value};
+        return {start, end, newValue: value};
     }
     catch (e){
         console.log(e);
     }
 }
 
-function getElementPosition(dom, string, position) {
+function getElFromString(dom, string, element, position, wholeEl) {
+    let findEl = document.createElement('findelement');
     let start, angle, documentTypeAngles;
-
+    if (position == 'afterbegin') {
+        element.insertAdjacentElement('afterbegin', findEl);
+    	angle = '>';
+    }
+    else if (position == 'afterend') {
+        element.insertAdjacentElement('afterend', findEl);
+    	angle = '>';
+    }
+    else if (position == 'beforebegin'){
+        element.insertAdjacentElement('afterbegin', findEl);
+    	angle = '<';
+    }	
+    else if (position == 'beforeend'){
+        element.insertAdjacentElement('afterend', findEl);
+    	angle = '<';
+    }	
     if (dom.tagName == 'HTML')
     	start = dom.outerHTML.indexOf("<findelement></findelement>");
     else
     	start = dom.innerHTML.indexOf("<findelement></findelement>");
+    
+    findEl.remove();
+    
     let domString = dom.outerHTML.substring(0, start);
-    if (position == 'afterbegin' || position == 'afterend')
-    	angle = '>'
-    if (position == 'beforebegin' || position == 'beforeend')
-    	angle = '<'
-    	start += 1;
 
     if (dom.tagName == "HTML") {
     	let htmlIndex = string.indexOf('<html');
-    	let documentType = string.substring(0, htmlIndex)
+    	let documentType = string.substring(0, htmlIndex);
     	documentTypeAngles = documentType.split(angle).length -1;
     }
-    let angles = domString.split(angle);;
-    let angleLength = angles.length -1;
+    let angles = domString.split(angle);
+    let angleLength = angles.length - 1;
+    // if (position == 'afterend' && angles[angles.length - 1] === '') 
+    //     angleLength -= 1;
+    // else if (position == 'afterend' && angles[angles.length - 1] !== '')
+    //     angleLength += 1;
+    // if (wholeEl && position == 'afterend') {
+    //     angleLength += 1;
+    // }
+    // if (wholeEl && position == 'beforebegin') {
+    //     angleLength += 1;
+    // }
     if (documentTypeAngles)
     	angleLength += documentTypeAngles;
-    let elStart = getPosition(string, angle, angleLength)
-    elStart += 1;
+    let elStart = getPosition(string, angle, angleLength);
+   
+    // if (position == 'beforebegin')
+        // elStart += 1
+    if (position == 'afterbegin') 
+        elStart += 1
+    else if (position == 'beforeend')
+        elStart += 1
+    else if (position == 'afterend') 
+        elStart += 1
+   	
     return elStart;
 }
-
 
 function getPosition(string, subString, index) {
   return string.split(subString, index).join(subString).length;
 }
 
-function cssPath(node, container = 'HTML') {
-    let pathSplits = [];
-    do {
-        if (!node || !node.tagName) return false;
-        let pathSplit = node.tagName.toLowerCase();
-        if (node.id) pathSplit += "#" + node.id;
-
-        if (node.classList.length) {
-            node.classList.forEach((item) => {
-                if (item.indexOf(":") === -1) pathSplit += "." + item;
-            });
-        }
-
-        if (node.parentNode) {
-            let index = Array.prototype.indexOf.call(
-                node.parentNode.children,
-                node
-            );
-            pathSplit += `:nth-child(${index + 1})`;
-        }
-
-        pathSplits.unshift(pathSplit);
-        node = node.parentNode;
-        if (node.tagName == "HTML" || node.nodeName == "#document" || node.hasAttribute('contenteditable'))
-        	node = ''
-    } while (node);
-    return pathSplits.join(" > ");
-}
-
-export function domParser(str) {
-    let mainTag = str.match(/\<(?<tag>[a-z0-9]+)(.*?)?\>/).groups.tag;
-    if (!mainTag)
-        throw new Error('find position: can not find the main tag');
-
-    let doc;
-    switch (mainTag) {
-        case 'html':
-            doc = new DOMParser().parseFromString(str, "text/html");
-            return doc.documentElement;
-        case 'body':
-            doc = new DOMParser().parseFromString(str, "text/html");
-            return doc.body;
-        case 'head':
-            doc = new DOMParser().parseFromString(str, "text/html");
-            return doc.head;
-
-        default:
-            let con = document.createElement('div');
-            con.innerHTML = str;
-            return con;
-    }
-}
-
-
-export default {getSelection, setSelection, hasSelection, processSelection, getDomPosition, getStringPosition, domParser};
+export default {getSelection, setSelection, hasSelection, processSelection, getStringPosition, getElementPosition};
