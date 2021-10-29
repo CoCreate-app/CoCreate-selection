@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.0.4...v1.1.0) (2021-10-29)
+
+
+### Features
+
+* get elements start and end position with out the need of element_id ([cdf1a85](https://github.com/CoCreate-app/CoCreate-selection/commit/cdf1a8517ab800c66c8fce2aa9d80e9701f9dd4c))
+* removed the need for element_id, uses cssPath instead ([08c7e9e](https://github.com/CoCreate-app/CoCreate-selection/commit/08c7e9ed90c2e3bc43990ef71b830b237c320392))
+
 ## [1.0.4](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.0.3...v1.0.4) (2021-10-17)
 
 
