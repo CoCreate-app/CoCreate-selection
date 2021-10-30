@@ -124,89 +124,85 @@ export function hasSelection(el) {
 
 export function getElementPosition(str, start, end) {
     let response = {};
-    let selection = [start];
-    // if (start != end) {
-    //     selection = [start, end];
-    // }
-    
-    for (let pos of selection) {
-        let startString = str.substr(0, pos);
-        let endString = str.substr(pos);
-        let angleStart = startString.lastIndexOf("<");
-        let angleEnd = startString.lastIndexOf(">");
-        let endStringAngleEnd = endString.indexOf(">");
-        let element, position, nodeStart, nodeEnd, startNode, type;
-        if (angleEnd > angleStart) {
-            let string = str.customSplice(start, 0, '<findelement></findelement>');
-            let newDom = domParser(string);
-            let findEl = newDom.querySelector('findelement');
-            if (findEl) {
-                let insert = getInsertPosition(findEl);
-                element = insert.target;
-                position = insert.position;
-                type = 'insertAdjacent';
-                if(!position)
-                    type = 'textNode';
-                if (type == 'textNode' || type == 'afterbegin');
-                    nodeStart = start - angleEnd - 1;
-                findEl.remove();
-            }
+    let startString = str.substr(0, start);
+    let endString = str.substr(start);
+    let angleStart = startString.lastIndexOf("<");
+    let angleEnd = startString.lastIndexOf(">");
+    let endStringAngleEnd = endString.indexOf(">");
+    let element, position, nodeStart, nodeEnd, startNode, type;
+    if (angleEnd > angleStart) {
+        let length = 0;
+        if (start != end)
+            length = end - start;
+        let string = str.customSplice(start, length, '<findelement></findelement>');
+        let newDom = domParser(string);
+        let findEl = newDom.querySelector('findelement');
+        if (findEl) {
+            let insert = getInsertPosition(findEl);
+            element = insert.target;
+            position = insert.position;
+            type = 'insertAdjacent';
+            if(!position)
+                type = 'textNode';
+            if (type == 'textNode' || type == 'afterbegin');
+                nodeStart = start - angleEnd - 1;
+            findEl.remove();
+        }
+    }
+    else {
+        let node = str.slice(angleStart, startString.length + endStringAngleEnd + 1);
+        if (node.startsWith("</")) {
+            startNode = node.slice(0, 1) + node.slice(2);
+            startNode = startNode.substr(0, startNode.length - 1);
+            nodeStart = startString.lastIndexOf(startNode);
+            let endString1 = str.substr(nodeStart);
+            let end = endString1.indexOf(">");
+            nodeEnd = nodeStart + end + 1;
+            type = 'isEndTag';
         }
         else {
-            let node = str.slice(angleStart, startString.length + endStringAngleEnd + 1);
-            if (node.startsWith("</")) {
-                startNode = node.slice(0, 1) + node.slice(2);
-                startNode = startNode.substr(0, startNode.length - 1);
-                nodeStart = startString.lastIndexOf(startNode);
-                let endString1 = str.substr(nodeStart);
-                let end = endString1.indexOf(">");
-                nodeEnd = nodeStart + end + 1;
-                type = 'isEndTag';
-            }
-            else {
-                nodeEnd = startString.length + endStringAngleEnd + 1;
-                startNode = node;
-                nodeStart = angleStart;
-                type = 'isStartTag';
-            }
-            if (nodeEnd > 0) {
-                let string = str.customSplice(nodeEnd - 1, 0, ' findelement');
-                let newDom = domParser(string);
-                element = newDom.querySelector('[findelement]');
-                if (type == "isEndTag")
+            nodeEnd = startString.length + endStringAngleEnd + 1;
+            startNode = node;
+            nodeStart = angleStart;
+            type = 'isStartTag';
+        }
+        if (nodeEnd > 0) {
+            let string = str.customSplice(nodeEnd - 1, 0, ' findelement');
+            let newDom = domParser(string);
+            element = newDom.querySelector('[findelement]');
+            if (!element && newDom.tagName == 'HTML')
+                element = newDom;
+            else if (type == "isEndTag")
+                element = element.parentElement;
+            element.removeAttribute('findelement');
+        }
+        else {
+            let string = str.customSplice(angleStart, 0, '<findelement></findelement>');
+            let newDom = domParser(string);
+            element = newDom.querySelector('findelement');
+            if (element) {
+                let insert = getInsertPosition(element);
+                element = insert.target.parentElement;
+                position = insert.position;
+                if(position == 'afterend')
                     element = element.parentElement;
-                if (!element && newDom.tagName == 'HTML')
-                    element = newDom;
-                element.removeAttribute('findelement');
+                type = 'innerHTML';
             }
-            else {
-                let string = str.customSplice(angleStart, 0, '<findelement></findelement>');
-                let newDom = domParser(string);
-                element = newDom.querySelector('findelement');
-                if (element) {
-                    let insert = getInsertPosition(element);
-                    element = insert.target.parentElement;
-                    position = insert.position;
-                    if(position == 'afterend')
-                        element = element.parentElement;
-                    type = 'innerHTML';
-                }
-                if (!element) {
-                    console.log('Could not find element');
-                }
+            if (!element) {
+                console.log('Could not find element');
             }
         }
-        
-        if (element) {
-            response.element = element;
-            response.path = cssPath(element);
-            response.position = position;
-            response.start = nodeStart;
-            response.end = nodeEnd;
-            response.type = type;
-        }
-
     }
+    
+    if (element) {
+        response.element = element;
+        response.path = cssPath(element);
+        response.position = position;
+        response.start = nodeStart;
+        response.end = nodeEnd;
+        response.type = type;
+    }
+
     return response;
 }
 
@@ -248,7 +244,8 @@ export function getStringPosition({string, target, position, attribute, property
         let dom = domParser(string);
         let element = dom.querySelector(selector);
         if (!element){
-            console.log('element could not be found using selector:', selector)
+            console.log('element could not be found using selector:', selector);
+            return;
         }
         let start = 0, end = 0;
         
