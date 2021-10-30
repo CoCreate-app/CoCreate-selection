@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.1.1...v1.1.2) (2021-10-30)
+
+
+### Bug Fixes
+
+* removed for loop in getElementPosition ([20b7ff4](https://github.com/CoCreate-app/CoCreate-selection/commit/20b7ff45dc1f321a246d4fe9f22590c5b1e17c0e))
+
 ## [1.1.1](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.1.0...v1.1.1) (2021-10-29)
 
 
