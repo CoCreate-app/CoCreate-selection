@@ -61,6 +61,8 @@ export function getSelection(element) {
 }
 
 export function processSelection(element, value = "", prev_start, prev_end, start, end, range) {
+	let prevStart = prev_start;
+	let prevEnd = prev_end;
 	if (prev_start >= start) {
 		if (value == "") {
 			prev_start -= end - start;
@@ -76,7 +78,30 @@ export function processSelection(element, value = "", prev_start, prev_end, star
 			prev_end = (prev_end >= end) ? prev_end - (end - start) : start;
 		}
 	}
-	setSelection(element, prev_start, prev_end, range);
+	if (range) {
+    	if (prevStart > prev_start){
+    	    let length = prevStart - prev_start;
+    	    if(Math.sign(length) === 1 && range.startOffset >= length)
+    	        range.startOffset -= length;
+    	}
+    	else if (prevStart < prev_start){
+    	    let length = prev_start - prevStart;
+    	    if(Math.sign(length) === 1 && range.startOffset >= length)
+    	        range.startOffset += length;
+    	}    
+    	if (prevEnd > prev_end){
+    	    let length = prevEnd - prev_end;
+    	    if(Math.sign(length) === 1 && range.endOffset >= length)
+    	        range.endOffset -= length;
+    	}
+    	else if (prevEnd < prev_end){
+    	    let length = prev_end - prevEnd;
+    	    if(Math.sign(length) === 1 && range.endOffset >= length)
+    	        range.endOffset += length;
+    	}
+	}  
+	    
+    setSelection(element, prev_start, prev_end, range);
     return {element, value, start, end, prev_start, prev_end};
 }
 
@@ -88,17 +113,21 @@ export function setSelection(element, start, end, range) {
     else {
         if (!range) return;
     	let Document = element.ownerDocument;
-    	let startOffset = start - range.elementStart;
-    	let endOffset = end - range.elementEnd;
-		let startContainer = getContainer(range.startContainer, startOffset);
-		let endContainer = getContainer(range.endContainer, endOffset);
-    	
+
+		let startContainer = getContainer(range.startContainer, range.startOffset);
+		let endContainer = getContainer(range.endContainer, range.endOffset);
+
+    	if (!startContainer || !endContainer) 
+    	    return;
+    	    
     	let selection = Document.getSelection();
     	selection.removeAllRanges();
-		const nrange = Document.createRange();
-		nrange.setStart(startContainer, startOffset);
-		nrange.setEnd(endContainer, endOffset);
-	    selection.addRange(nrange);
+		
+		const newRange = Document.createRange();
+		newRange.setStart(startContainer, range.startOffset);
+		newRange.setEnd(endContainer, range.endOffset);
+	    
+	    selection.addRange(newRange);
 	}
 }
 
