@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "@cocreate/docs": "^1.2.44",
-    "@cocreate/hosting": "^1.2.38",
-    "@cocreate/utils": "^1.3.0"
+    "@cocreate/hosting": "^1.2.39",
+    "@cocreate/utils": "^1.3.1"
   }
 }
