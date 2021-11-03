@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.1.4...v1.1.5) (2021-11-03)
+
+
+### Bug Fixes
+
+* impoved processSelection to handle ranges if postion is negative of postion amount is greater then the element character length ([7788721](https://github.com/CoCreate-app/CoCreate-selection/commit/778872171e7a9f743ecd8fd53fd0e940d52bf27c))
+
 ## [1.1.4](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.1.3...v1.1.4) (2021-11-03)
 
 
