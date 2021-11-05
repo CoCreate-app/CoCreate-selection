@@ -287,7 +287,7 @@ export function getStringPosition({string, target, position, attribute, property
         }
         else if (attribute) {
             if (!element.hasAttribute(attribute)){
-            	start = getElFromString(dom, string, element, 'afterbegin') - 1;
+            	start = getElFromString(dom, string, element, 'afterbegin', true) - 1;
                 end = start;
             }
             else {
@@ -339,7 +339,7 @@ export function getStringPosition({string, target, position, attribute, property
     }
 }
 
-function getElFromString(dom, string, element, position, wholeEl) {
+function getElFromString(dom, string, element, position, isAttribute) {
     let findEl = document.createElement('findelement');
     let start, angle, documentTypeAngles;
     if (position == 'afterbegin') {
@@ -362,6 +362,16 @@ function getElFromString(dom, string, element, position, wholeEl) {
     	start = dom.outerHTML.indexOf("<findelement></findelement>");
     else
     	start = dom.innerHTML.indexOf("<findelement></findelement>");
+    
+    if (start == -1){
+        position = 'singleton'
+        element.insertAdjacentElement('afterend', findEl);
+    	angle = '>';
+        if (dom.tagName == 'HTML')
+        	start = dom.outerHTML.indexOf("<findelement></findelement>");
+        else
+        	start = dom.innerHTML.indexOf("<findelement></findelement>");
+    }
     
     findEl.remove();
     
@@ -396,7 +406,13 @@ function getElFromString(dom, string, element, position, wholeEl) {
         elStart += 1
     else if (position == 'afterend') 
         elStart += 1
-   	
+    else if (position == 'singleton'){ 
+        let newString = string.substring(0, elStart);
+        if (newString.lastIndexOf('/') == newString.length - 1 && isAttribute)
+            elStart;
+        else
+            elStart += 1
+    }
     return elStart;
 }
 
