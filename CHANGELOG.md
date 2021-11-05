@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.1.7...v1.2.0) (2021-11-05)
+
+
+### Features
+
+* support for singleton/no-endTag elements ([2be4a89](https://github.com/CoCreate-app/CoCreate-selection/commit/2be4a8965666e9dd24a9804d718432fcff71ffca))
+
 ## [1.1.7](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.1.6...v1.1.7) (2021-11-04)
 
 
