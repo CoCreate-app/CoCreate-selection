@@ -365,7 +365,6 @@ function getElFromString(dom, string, element, position, isAttribute) {
     if (start == -1){
         position = 'singleton';
         element.insertAdjacentElement('afterend', findEl);
-    	angle = '>';
         if (dom.tagName == 'HTML')
         	start = dom.outerHTML.indexOf("<findelement></findelement>");
         else
