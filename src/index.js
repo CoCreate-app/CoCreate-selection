@@ -1,4 +1,3 @@
-/*globals Node*/
 import {cssPath, domParser} from '@cocreate/utils';
 
 String.prototype.customSplice = function(index, absIndex, string) {
@@ -20,18 +19,18 @@ export function getSelection(element) {
 		let range = selection.getRangeAt(0);
         let start = range.startOffset;
         let end = range.endOffset;
-        let previousSibling = range.startContainer.previousSibling
+        let previousSibling = range.startContainer.previousSibling;
 		if(previousSibling && previousSibling.nodeType == 3) {
 			let length = 0;
 			do {
 				length += previousSibling.length;
 				previousSibling = previousSibling.previousSibling;
 			} while (previousSibling);
-			start += length
-			end += length
+			start += length;
+			end += length;
 		}
 		if(range.startContainer != range.endContainer) {
-    // 		toDo: replace common ancestor value
+            // toDo: replace common ancestor value
 		}
 		let domTextEditor = element;
 		if (!domTextEditor.htmlString){
@@ -41,8 +40,8 @@ export function getSelection(element) {
 		if (domTextEditor){
             let nodePos = getStringPosition({ string: domTextEditor.htmlString, target: range.startContainer.parentElement, position: 'afterbegin'});
             if (nodePos){
-                elementStart = nodePos.start
-                elementEnd = nodePos.end
+                elementStart = nodePos.start;
+                elementEnd = nodePos.end;
                 start = start + nodePos.start;
                 end = end + nodePos.end;
             }
@@ -316,7 +315,7 @@ export function getStringPosition({string, target, position, attribute, property
                     value = element.getAttribute(attribute); 
                 }
                 else {
-                    element.setAttribute(attribute, value)
+                    element.setAttribute(attribute, value);
                     value = element.getAttribute(attribute); 
                 }
                 end = start + attribute.length + attrValue.length + 4;
@@ -364,7 +363,7 @@ function getElFromString(dom, string, element, position, isAttribute) {
     	start = dom.innerHTML.indexOf("<findelement></findelement>");
     
     if (start == -1){
-        position = 'singleton'
+        position = 'singleton';
         element.insertAdjacentElement('afterend', findEl);
     	angle = '>';
         if (dom.tagName == 'HTML')
@@ -384,34 +383,22 @@ function getElFromString(dom, string, element, position, isAttribute) {
     }
     let angles = domString.split(angle);
     let angleLength = angles.length - 1;
-    // if (position == 'afterend' && angles[angles.length - 1] === '') 
-    //     angleLength -= 1;
-    // else if (position == 'afterend' && angles[angles.length - 1] !== '')
-    //     angleLength += 1;
-    // if (wholeEl && position == 'afterend') {
-    //     angleLength += 1;
-    // }
-    // if (wholeEl && position == 'beforebegin') {
-    //     angleLength += 1;
-    // }
     if (documentTypeAngles)
     	angleLength += documentTypeAngles;
     let elStart = getPosition(string, angle, angleLength);
    
-    // if (position == 'beforebegin')
-        // elStart += 1
     if (position == 'afterbegin') 
-        elStart += 1
+        elStart += 1;
     else if (position == 'beforeend')
-        elStart += 1
+        elStart += 1;
     else if (position == 'afterend') 
-        elStart += 1
+        elStart += 1;
     else if (position == 'singleton'){ 
         let newString = string.substring(0, elStart);
         if (newString.lastIndexOf('/') == newString.length - 1 && isAttribute)
             elStart;
         else
-            elStart += 1
+            elStart += 1;
     }
     return elStart;
 }
