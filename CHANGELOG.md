@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.0...v1.2.1) (2021-11-05)
+
+
+### Bug Fixes
+
+* if el is singleton fixed returning start or end position ([c5b9d85](https://github.com/CoCreate-app/CoCreate-selection/commit/c5b9d85fb87a4554ffea1d150f5bfa8bdfd57ac6))
+
 # [1.2.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.1.7...v1.2.0) (2021-11-05)
 
 
