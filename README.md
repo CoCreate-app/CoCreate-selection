@@ -6,7 +6,8 @@ A simple selection component in vanilla javascript. Easily configured using HTML
 ![gzip file size in bytes](https://img.badgesize.io/https://cdn.cocreate.app/selection/latest/CoCreate-selection.min.js?compression=gzip&style=flat-square&label=gzip&color=yellow)
 ![brotlifile size in bytes](https://img.badgesize.io/https://cdn.cocreate.app/selection/latest/CoCreate-selection.min.js?compression=brotli&style=flat-square&label=brotli)
 ![GitHub latest release](https://img.shields.io/github/v/release/CoCreate-app/CoCreate-selection?style=flat-square)
-![GitHub](https://img.shields.io/github/license/CoCreate-app/CoCreate-selection?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/CoCreate-app/CoCreate-metrics-server?style=flat-square)
+![License](https://img.shields.io/static/v1?style=flat-square&label=license&message=AGPL-3.0&color=green)
 ![GitHub](https://img.shields.io/static/v1?style=flat-square&label=&message=Hiring&color=blueviolet)
 
 
@@ -80,11 +81,17 @@ We want this library to be community-driven, and CoCreate led. We need your help
 We appreciate your continued support, thank you!
 
 
+<a name="license"></a>
 # Dual License
 ## Open Source
 [GNU Affero General Public License version 3 (AGPL-3.0)](https://github.com/CoCreate-app/CoCreate-selection/blob/master/LICENSE)
 
 ## Commercial
+For-profit companies and individuals intending to use CoCreate-selection for 
+commercial use must purchase a commercial license. This license allows 
+source code modifications, but does not permit redistribution of 
+modifications.
+
 The commercial license is designed for you to use CoCreate-selection in commercial 
 products and applications, without the provisions of the GPLv3. With the 
 commercial license, your code is kept propietary, to yourself. If you 
