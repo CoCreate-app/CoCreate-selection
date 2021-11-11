@@ -80,6 +80,13 @@ We want this library to be community-driven, and CoCreate led. We need your help
 We appreciate your continued support, thank you!
 
 
-# License
+# Dual License
+## Open Source
+[GNU Affero General Public License version 3 (AGPL-3.0)](https://github.com/CoCreate-app/CoCreate-selection/blob/master/LICENSE)
 
-[The MIT License (MIT)](https://github.com/CoCreate-app/CoCreate-selection/blob/master/LICENSE)
+## Commercial
+The commercial license is designed for you to use CoCreate-selection in commercial 
+products and applications, without the provisions of the GPLv3. With the 
+commercial license, your code is kept propietary, to yourself. If you 
+want to use CoCreate-selection to develop commercial sites, themes, projects, and 
+applications, the commercial license is the appropriate license.
