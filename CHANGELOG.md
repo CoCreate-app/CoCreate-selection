@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.2...v1.2.3) (2021-11-11)
+
+
+### Bug Fixes
+
+* licensing information ([be006af](https://github.com/CoCreate-app/CoCreate-selection/commit/be006afa6ed25f643514e0f57a4fe952cadfc79a))
+
 ## [1.2.2](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.1...v1.2.2) (2021-11-06)
 
 
