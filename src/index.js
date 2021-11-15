@@ -245,7 +245,7 @@ function getInsertPosition(element){
         }
         else if (!nextSibling) {
             target = element.parentElement;
-            position = 'beforend';
+            position = 'beforeend';
         }
         else if (previousSibling && previousSibling.nodeType == 1) {
             target = previousSibling;
