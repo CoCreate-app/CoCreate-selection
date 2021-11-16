@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.5...v1.2.6) (2021-11-15)
+
+
+### Bug Fixes
+
+* position typo beforeend ([a2c242a](https://github.com/CoCreate-app/CoCreate-selection/commit/a2c242a974177b3832665b17294847882d064f74))
+
 ## [1.2.5](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.4...v1.2.5) (2021-11-15)
 
 
