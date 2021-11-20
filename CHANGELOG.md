@@ -1,3 +1,10 @@
+## [1.2.11](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.10...v1.2.11) (2021-11-20)
+
+
+### Bug Fixes
+
+* updated script tags and link tags ([fe1298e](https://github.com/CoCreate-app/CoCreate-selection/commit/fe1298ead9c4106d14ed02f19944b76cab3f58f9))
+
 ## [1.2.10](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.9...v1.2.10) (2021-11-20)
 
 
