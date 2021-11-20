@@ -1,3 +1,10 @@
+## [1.2.12](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.11...v1.2.12) (2021-11-20)
+
+
+### Bug Fixes
+
+* remove cdn.CoCreate.min.css ([c412faf](https://github.com/CoCreate-app/CoCreate-selection/commit/c412fafdf2faa0600d39588be01cf932820ff7c1))
+
 ## [1.2.11](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.10...v1.2.11) (2021-11-20)
 
 
