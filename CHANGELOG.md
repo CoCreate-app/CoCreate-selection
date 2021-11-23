@@ -1,3 +1,10 @@
+## [1.2.13](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.12...v1.2.13) (2021-11-23)
+
+
+### Bug Fixes
+
+* if node begins with a textNode ([0be3739](https://github.com/CoCreate-app/CoCreate-selection/commit/0be373961d2da5c79b9abc2311133621a163c350))
+
 ## [1.2.12](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.11...v1.2.12) (2021-11-20)
 
 
