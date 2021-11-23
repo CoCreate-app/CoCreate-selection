@@ -177,6 +177,9 @@ export function getElementPosition(str, start, end) {
             findEl.remove();
         }
     }
+    else if (angleStart == -1) {
+        type = 'textNode';
+    }
     else {
         let node = str.slice(angleStart, startString.length + endStringAngleEnd + 1);
         if (node.startsWith("</")) {
