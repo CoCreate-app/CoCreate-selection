@@ -20,7 +20,7 @@ export function getSelection(element) {
         let start = range.startOffset;
         let end = range.endOffset;
         let previousSibling = range.startContainer.previousSibling;
-		if(previousSibling && previousSibling.nodeType == 3) {
+		if(element.innerHTML && previousSibling && previousSibling.nodeType == 3) {
 			let length = 0;
 			do {
 				length += previousSibling.length;
@@ -29,6 +29,7 @@ export function getSelection(element) {
 			start += length;
 			end += length;
 		}
+		
 		if(range.startContainer != range.endContainer) {
             // toDo: replace common ancestor value
 		}
@@ -37,7 +38,7 @@ export function getSelection(element) {
 			domTextEditor = element.closest('[contenteditable]');
 		}
 		let elementStart = start, elementEnd = end;
-		if (domTextEditor){
+		if (domTextEditor && domTextEditor.htmlString){
             let nodePos = getStringPosition({ string: domTextEditor.htmlString, target: range.startContainer.parentElement, position: 'afterbegin'});
             if (nodePos){
                 elementStart = nodePos.start;
@@ -46,11 +47,20 @@ export function getSelection(element) {
                 end = end + nodePos.end;
             }
 		}
+		
+		let startContainer = range.startContainer;
+		if (startContainer.nodeType == 3)
+		    startContainer = range.startContainer.parentElement;
+		
+		let endContainer = range.endContainer;
+		if (endContainer.nodeType == 3)
+		    endContainer = range.endContainer.parentElement;
+
         let rangeObj = {
         	startOffset: range.startOffset, 
         	endOffset: range.endOffset, 
-        	startContainer: range.startContainer.parentElement, 
-        	endContainer: range.endContainer.parentElement,
+        	startContainer, 
+        	endContainer,
         	elementStart,
         	elementEnd
         };
@@ -85,8 +95,9 @@ export function processSelection(element, value = "", prev_start, prev_end, star
     	}
     	else if (prevStart < prev_start){
     	    let length = prev_start - prevStart;
-    	    if(Math.sign(length) === 1 && range.startOffset >= length)
-    	        range.startOffset += length;
+    	    if(Math.sign(length) === 1)
+    	        if (range.startOffset == 0 || range.startOffset >= length)
+    	            range.startOffset += length;
     	}    
     	if (prevEnd > prev_end){
     	    let length = prevEnd - prev_end;
@@ -95,8 +106,9 @@ export function processSelection(element, value = "", prev_start, prev_end, star
     	}
     	else if (prevEnd < prev_end){
     	    let length = prev_end - prevEnd;
-    	    if(Math.sign(length) === 1 && range.endOffset >= length)
-    	        range.endOffset += length;
+    	    if(Math.sign(length) === 1)
+    	        if (range.endOffset == 0 || range.endOffset >= length)
+    	            range.endOffset += length;
     	}
 	}  
 	    
