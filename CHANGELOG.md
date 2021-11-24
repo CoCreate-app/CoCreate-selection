@@ -1,3 +1,10 @@
+## [1.2.15](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.14...v1.2.15) (2021-11-24)
+
+
+### Bug Fixes
+
+* processSelection when at position 0 ([2143e31](https://github.com/CoCreate-app/CoCreate-selection/commit/2143e313e1dcf744980df298790f13442e5715bd))
+
 ## [1.2.14](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.13...v1.2.14) (2021-11-23)
 
 
