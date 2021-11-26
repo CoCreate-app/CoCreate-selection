@@ -1,3 +1,10 @@
+## [1.2.17](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.16...v1.2.17) (2021-11-26)
+
+
+### Bug Fixes
+
+* add nav and sidenav to docs ([eb6f6f1](https://github.com/CoCreate-app/CoCreate-selection/commit/eb6f6f1d7459a57abea30a3976ce6488a36cbc25))
+
 ## [1.2.16](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.15...v1.2.16) (2021-11-26)
 
 
