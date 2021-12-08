@@ -1,3 +1,10 @@
+## [1.2.21](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.20...v1.2.21) (2021-12-08)
+
+
+### Bug Fixes
+
+* check parent for closest contenteditable, return range.element ([dbe5d32](https://github.com/CoCreate-app/CoCreate-selection/commit/dbe5d32fbfdb3912ddcbe005f24c315fc444f17b))
+
 ## [1.2.20](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.19...v1.2.20) (2021-11-27)
 
 
