@@ -33,6 +33,10 @@ export function getSelection(element) {
 		if(range.startContainer != range.endContainer) {
             // toDo: replace common ancestor value
 		}
+        let contenteditable = range.startContainer.parentElement.closest('[contenteditable][collection][document_id][name]');
+        if (contenteditable){
+            element = contenteditable;
+        }
 		let domTextEditor = element;
 		if (!domTextEditor.htmlString){
 			domTextEditor = element.closest('[contenteditable]');
@@ -57,6 +61,7 @@ export function getSelection(element) {
 		    endContainer = range.endContainer.parentElement;
 
         let rangeObj = {
+            element: contenteditable,
         	startOffset: range.startOffset, 
         	endOffset: range.endOffset, 
         	startContainer, 
@@ -418,7 +423,11 @@ function getElFromString(dom, string, element, position, isAttribute) {
 }
 
 function getPosition(string, subString, index) {
-  return string.split(subString, index).join(subString).length;
+    let angleArray = string.split(subString, index);
+    let startstring = angleArray.join(subString);
+    let start = startstring.length;
+    return start;
+    // return string.split(subString, index).join(subString).length;
 }
 
 export default {getSelection, setSelection, hasSelection, processSelection, getStringPosition, getElementPosition};
