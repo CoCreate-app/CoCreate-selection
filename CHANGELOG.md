@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.21...v1.3.0) (2021-12-14)
+
+
+### Bug Fixes
+
+* update dependencies ([4fa877a](https://github.com/CoCreate-app/CoCreate-selection/commit/4fa877ad1df7ec4a58f050a7132aa3f071ccfd5d))
+
+
+### Features
+
+* support nested contenteditable and selections for cursor positions ([8efc22d](https://github.com/CoCreate-app/CoCreate-selection/commit/8efc22d303ba88dbb6fdbf4d65cb2988afec73ca))
+
 ## [1.2.21](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.2.20...v1.2.21) (2021-12-08)
 
 
