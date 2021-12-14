@@ -62,6 +62,7 @@ export function getSelection(element) {
 
         let rangeObj = {
             element: contenteditable,
+            // domTextEditor,
         	startOffset: range.startOffset, 
         	endOffset: range.endOffset, 
         	startContainer, 
@@ -288,9 +289,17 @@ function getInsertPosition(element){
 
 export function getStringPosition({string, target, position, attribute, property, value}) {
     try {
+        let element;
         let selector = cssPath(target, '[contenteditable]');
         let dom = domParser(string);
-        let element = dom.querySelector(selector);
+        if (!selector.includes('[eid=') && dom.tagName == "DOM-PARSER"){
+            let containerEl = document.createElement('div');
+            containerEl.appendChild(dom)
+            selector = `dom-parser > ${selector}`
+            element = containerEl.querySelector(selector);
+        }
+        else
+            element = dom.querySelector(selector);
         if (!element){
             console.log('element could not be found using selector:', selector);
             return;
