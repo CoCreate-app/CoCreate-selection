@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.3.2...v1.3.3) (2022-01-01)
+
+
+### Bug Fixes
+
+* removed data- from attributes ([eeb5317](https://github.com/CoCreate-app/CoCreate-selection/commit/eeb5317308f8edaafac66fe5e39e427cd2c7234f))
+
 ## [1.3.2](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.3.1...v1.3.2) (2021-12-15)
 
 
