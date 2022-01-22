@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.3.4...v1.4.0) (2022-01-22)
+
+
+### Features
+
+* removeClass and removeStyle to remove the className or property from CRDT string ([a610075](https://github.com/CoCreate-app/CoCreate-selection/commit/a6100751ec02da5cb3c592f9a1854376d52d55fc))
+
 ## [1.3.4](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.3.3...v1.3.4) (2022-01-01)
 
 
