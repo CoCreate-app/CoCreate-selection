@@ -287,7 +287,7 @@ function getInsertPosition(element){
     return {target, position};
 }
 
-export function getStringPosition({string, target, position, attribute, property, value}) {
+export function getStringPosition({string, target, position, attribute, property, value, remove}) {
     try {
         let element;
         let selector = cssPath(target, '[contenteditable]');
@@ -325,7 +325,10 @@ export function getStringPosition({string, target, position, attribute, property
                 let attrStart = elString.indexOf(` ${attribute}=`);
                 start = start + attrStart;
                 if (attribute == 'style') {
-                    element.style[property] = value;
+                    if (remove)
+                        element.style.removeProperty(property);
+                    else
+                        element.style[property] = value;
                     value = element.getAttribute(attribute);
                 }
                 else if (attribute == 'class') {
@@ -340,7 +343,8 @@ export function getStringPosition({string, target, position, attribute, property
                             element.classList.remove(propString);
                         }
                     }
-                    element.classList.add(value);
+                    if (!remove)
+                        element.classList.add(value);
                     value = element.getAttribute(attribute); 
                 }
                 else {
