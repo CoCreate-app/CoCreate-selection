@@ -188,10 +188,13 @@ export function getElementPosition(str, start, end) {
             element = insert.target;
             position = insert.position;
             type = 'insertAdjacent';
-            if(!position)
+            if (!position)
+                type = 'textNode';
+            if (position == 'beforeend' && findEl.previousSibling && findEl.previousSibling.nodeType == 3 )
                 type = 'textNode';
             if (type == 'textNode' || type == 'afterbegin');
                 nodeStart = start - angleEnd - 1;
+            
             findEl.remove();
         }
     }
