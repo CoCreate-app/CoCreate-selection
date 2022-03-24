@@ -192,7 +192,7 @@ export function getElementPosition(str, start, end) {
                 type = 'textNode';
             if (position == 'beforeend' && findEl.previousSibling && findEl.previousSibling.nodeType == 3 )
                 type = 'textNode';
-            if (type == 'textNode' || type == 'afterbegin');
+            if (type == 'textNode' || position == 'afterbegin')
                 nodeStart = start - angleEnd - 1;
             
             findEl.remove();
