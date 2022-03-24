@@ -1,3 +1,11 @@
+## [1.4.7](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.6...v1.4.7) (2022-03-24)
+
+
+### Bug Fixes
+
+* if insert position is beforeend and the previousSibling is a textnode type=textNode ([031eac5](https://github.com/CoCreate-app/CoCreate-selection/commit/031eac52fdada4eb54675e64a07394a92c616b6e))
+* typo if condition ended with ; and type updated to position for afterbegin ([b916009](https://github.com/CoCreate-app/CoCreate-selection/commit/b91600977f60c43071b06dc66e6ef48ab7fcfc34))
+
 ## [1.4.6](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.5...v1.4.6) (2022-02-24)
 
 
