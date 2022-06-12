@@ -1,3 +1,11 @@
+## [1.4.11](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.10...v1.4.11) (2022-06-12)
+
+
+### Bug Fixes
+
+* update dependencies ([9b27560](https://github.com/CoCreate-app/CoCreate-selection/commit/9b2756064e1928ea3d7d4edd11d22c0f78cadf4d))
+* update docs css document_id ([234fc34](https://github.com/CoCreate-app/CoCreate-selection/commit/234fc344cb94447afbb4014c2ae62633e45bb548))
+
 ## [1.4.10](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.9...v1.4.10) (2022-05-23)
 
 
