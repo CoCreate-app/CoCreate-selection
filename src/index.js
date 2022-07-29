@@ -304,7 +304,7 @@ export function getStringPosition({string, target, position, attribute, property
         else
             element = dom.querySelector(selector);
         if (!element){
-            console.log('element could not be found using selector:', selector);
+            // console.log('element could not be found using selector:', selector);
             return;
         }
         let start = 0, end = 0;
