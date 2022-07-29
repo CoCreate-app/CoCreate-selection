@@ -1,3 +1,10 @@
+## [1.4.13](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.12...v1.4.13) (2022-07-29)
+
+
+### Bug Fixes
+
+* removed console.log ([d9cee14](https://github.com/CoCreate-app/CoCreate-selection/commit/d9cee14952326f2edf94594bf2a2be04e1ff2227))
+
 ## [1.4.12](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.11...v1.4.12) (2022-06-18)
 
 
