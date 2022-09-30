@@ -1,3 +1,10 @@
+## [1.4.17](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.16...v1.4.17) (2022-09-30)
+
+
+### Bug Fixes
+
+* bump dependencies ([abfaef0](https://github.com/CoCreate-app/CoCreate-selection/commit/abfaef088d310244cbb588854f8e62cdef8ddabb))
+
 ## [1.4.16](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.15...v1.4.16) (2022-09-30)
 
 
