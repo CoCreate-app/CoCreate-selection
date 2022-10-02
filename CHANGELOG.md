@@ -1,3 +1,10 @@
+## [1.4.24](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.23...v1.4.24) (2022-10-02)
+
+
+### Bug Fixes
+
+* minor bug fixes ([832595f](https://github.com/CoCreate-app/CoCreate-selection/commit/832595fa0a4a9dcbe44a4d7980f96cfd1d99ced2))
+
 ## [1.4.23](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.22...v1.4.23) (2022-10-02)
 
 
