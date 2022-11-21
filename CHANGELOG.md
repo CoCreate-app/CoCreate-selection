@@ -1,3 +1,10 @@
+## [1.4.27](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.26...v1.4.27) (2022-11-21)
+
+
+### Bug Fixes
+
+* replaced document_id with document._id ([c5c598c](https://github.com/CoCreate-app/CoCreate-selection/commit/c5c598c842aa160ee651a5c41c56cd7e2e0dc000))
+
 ## [1.4.26](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.25...v1.4.26) (2022-11-21)
 
 
