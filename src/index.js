@@ -20,7 +20,7 @@ export function getSelection(element) {
         let start = range.startOffset;
         let end = range.endOffset;
         let previousSibling = range.startContainer.previousSibling;
-		if(element.innerHTML && previousSibling && previousSibling.nodeType == 3) {
+		if (element.innerHTML && previousSibling && previousSibling.nodeType == 3) {
 			let length = 0;
 			do {
 				length += previousSibling.length;
@@ -30,7 +30,7 @@ export function getSelection(element) {
 			end += length;
 		}
 		
-		if(range.startContainer != range.endContainer) {
+		if (range.startContainer != range.endContainer) {
             // toDo: replace common ancestor value
 		}
         let contenteditable = range.startContainer.parentElement.closest('[contenteditable][collection][document_id][name]');
@@ -96,23 +96,23 @@ export function processSelection(element, value = "", prev_start, prev_end, star
 	if (range) {
     	if (prevStart > prev_start){
     	    let length = prevStart - prev_start;
-    	    if(Math.sign(length) === 1 && range.startOffset >= length)
+    	    if (Math.sign(length) === 1 && range.startOffset >= length)
     	        range.startOffset -= length;
     	}
     	else if (prevStart < prev_start){
     	    let length = prev_start - prevStart;
-    	    if(Math.sign(length) === 1)
+    	    if (Math.sign(length) === 1)
     	        if (range.startOffset == 0 || range.startOffset >= length)
     	            range.startOffset += length;
     	}    
     	if (prevEnd > prev_end){
     	    let length = prevEnd - prev_end;
-    	    if(Math.sign(length) === 1 && range.endOffset >= length)
+    	    if (Math.sign(length) === 1 && range.endOffset >= length)
     	        range.endOffset -= length;
     	}
     	else if (prevEnd < prev_end){
     	    let length = prev_end - prevEnd;
-    	    if(Math.sign(length) === 1)
+    	    if (Math.sign(length) === 1)
     	        if (range.endOffset == 0 || range.endOffset >= length)
     	            range.endOffset += length;
     	}
@@ -163,7 +163,7 @@ function getContainer(element, offset){
 
 export function hasSelection(el) {
 	let { start, end } = getSelection(el);
-	if(start != end) {
+	if (start != end) {
 		return true;
 	}
 }
@@ -236,7 +236,7 @@ export function getElementPosition(str, start, end) {
                 let insert = getInsertPosition(element);
                 element = insert.target.parentElement;
                 position = insert.position;
-                if(position == 'afterend')
+                if (position == 'afterend')
                     element = element.parentElement;
                 type = 'innerHTML';
             }
