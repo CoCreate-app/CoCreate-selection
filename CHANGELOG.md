@@ -1,3 +1,10 @@
+## [1.4.58](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.57...v1.4.58) (2023-01-01)
+
+
+### Bug Fixes
+
+* docs sanbox overflow ([0bb0c0b](https://github.com/CoCreate-app/CoCreate-selection/commit/0bb0c0b0709986724dc203ccc7c6d686b1e4743e))
+
 ## [1.4.57](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.56...v1.4.57) (2022-12-31)
 
 
