@@ -1,3 +1,11 @@
+## [1.4.59](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.58...v1.4.59) (2023-01-05)
+
+
+### Bug Fixes
+
+* bump cdn to 1.39.4 ([308b6e4](https://github.com/CoCreate-app/CoCreate-selection/commit/308b6e402529db50e2f60480435998c4aecb5763))
+* bump dependencies ([c55dcc4](https://github.com/CoCreate-app/CoCreate-selection/commit/c55dcc4327c6e8a68f2b8d812b7c897a624495be))
+
 ## [1.4.58](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.4.57...v1.4.58) (2023-01-01)
 
 
