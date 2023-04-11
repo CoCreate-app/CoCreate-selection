@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.5.3...v1.5.4) (2023-04-11)
+
+
+### Bug Fixes
+
+* renamed domains to hosts ([6bde086](https://github.com/CoCreate-app/CoCreate-selection/commit/6bde086f71faa5aa2b50113f1750704d93bc0614))
+
 ## [1.5.3](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.5.2...v1.5.3) (2023-03-30)
 
 
