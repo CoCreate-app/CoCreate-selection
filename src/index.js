@@ -170,8 +170,8 @@ export function hasSelection(el) {
 
 export function getElementPosition(str, start, end) {
     let response = {};
-    let startString = str.substr(0, start);
-    let endString = str.substr(start);
+    let startString = str.substring(0, start);
+    let endString = str.substring(start);
     let angleStart = startString.lastIndexOf("<");
     let angleEnd = startString.lastIndexOf(">");
     let endStringAngleEnd = endString.indexOf(">");
@@ -205,9 +205,9 @@ export function getElementPosition(str, start, end) {
         let node = str.slice(angleStart, startString.length + endStringAngleEnd + 1);
         if (node.startsWith("</")) {
             startNode = node.slice(0, 1) + node.slice(2);
-            startNode = startNode.substr(0, startNode.length - 1);
+            startNode = startNode.substring(0, startNode.length - 1);
             nodeStart = startString.lastIndexOf(startNode);
-            let endString1 = str.substr(nodeStart);
+            let endString1 = str.substring(nodeStart);
             let end = endString1.indexOf(">");
             nodeEnd = nodeStart + end + 1;
             type = 'isEndTag';
@@ -323,7 +323,7 @@ export function getStringPosition({string, target, position, attribute, property
             }
             else {
             	start = getElFromString(dom, string, element, 'beforebegin');
-                let elString = string.substr(start);
+                let elString = string.substring(start);
                 let attrValue = element.getAttribute(attribute);
                 let attrStart = elString.indexOf(` ${attribute}=`);
                 start = start + attrStart;
@@ -339,7 +339,7 @@ export function getStringPosition({string, target, position, attribute, property
                     if (prop && val){
                         if (attrValue.includes(`${prop}:`)){
                             let propStart = attrValue.indexOf(`${prop}:`);
-                            let propString = attrValue.substr(propStart);
+                            let propString = attrValue.substring(propStart);
                             let propEnd = propString.indexOf(" ");
                             if (propEnd > 0)
                                 propString = propString.slice(0, propEnd);
