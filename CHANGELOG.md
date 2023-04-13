@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.5.6...v1.5.7) (2023-04-13)
+
+
+### Bug Fixes
+
+* replaced substr with substring ([e51f5e6](https://github.com/CoCreate-app/CoCreate-selection/commit/e51f5e631dc6b5d7b0da3de10cc4371227d008b0))
+
 ## [1.5.6](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.5.5...v1.5.6) (2023-04-11)
 
 
