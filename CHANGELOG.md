@@ -1,3 +1,11 @@
+## [1.6.3](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.2...v1.6.3) (2023-04-24)
+
+
+### Bug Fixes
+
+* updated worrkflows to v3 and node version 16 ([cc8018a](https://github.com/CoCreate-app/CoCreate-selection/commit/cc8018ae3f1930be263d6df921d7142f4a068ecf))
+* workflow node version updated  16 ([a913389](https://github.com/CoCreate-app/CoCreate-selection/commit/a913389ab1f329ab972d5b3e1bbef6b6febb8c9e))
+
 ## [1.6.2](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.1...v1.6.2) (2023-04-24)
 
 
