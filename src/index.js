@@ -31,7 +31,7 @@ export function getSelection(element) {
 		}
 		
 		if (range.startContainer != range.endContainer) {
-            // toDo: replace common ancestor value
+            // TODO: replace common ancestor value
 		}
         let contenteditable = range.startContainer.parentElement.closest('[contenteditable][collection][document_id][name]');
         if (contenteditable){
