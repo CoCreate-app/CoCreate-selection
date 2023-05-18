@@ -1,3 +1,10 @@
+## [1.6.8](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.7...v1.6.8) (2023-05-18)
+
+
+### Bug Fixes
+
+* apikey renamed to key ([d14fe20](https://github.com/CoCreate-app/CoCreate-selection/commit/d14fe20711cb9352aef8bc49afc116ba59e73c67))
+
 ## [1.6.7](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.6...v1.6.7) (2023-05-06)
 
 
