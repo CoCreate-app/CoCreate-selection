@@ -1,3 +1,10 @@
+## [1.6.11](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.10...v1.6.11) (2023-06-02)
+
+
+### Bug Fixes
+
+* format demo html ([113b9dc](https://github.com/CoCreate-app/CoCreate-selection/commit/113b9dcdcbdf7bd34f60a9e89d1fd9d9ddad7844))
+
 ## [1.6.10](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.9...v1.6.10) (2023-05-21)
 
 
