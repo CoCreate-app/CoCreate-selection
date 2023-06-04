@@ -1,3 +1,11 @@
+## [1.6.13](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.12...v1.6.13) (2023-06-04)
+
+
+### Bug Fixes
+
+* replaced secert GITHUB_TOKEN with GITHUB ([601eb95](https://github.com/CoCreate-app/CoCreate-selection/commit/601eb95ffcce05bd109630c9fdb9706d1365da11))
+* Update dependencies versions for [@cocreate](https://github.com/cocreate) libraries ([a13bb15](https://github.com/CoCreate-app/CoCreate-selection/commit/a13bb1562e2fd80528283d3a65b2839c8316c32c))
+
 ## [1.6.12](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.11...v1.6.12) (2023-06-04)
 
 
