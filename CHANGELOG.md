@@ -1,3 +1,10 @@
+## [1.6.27](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.26...v1.6.27) (2023-06-11)
+
+
+### Bug Fixes
+
+* Update dependencies versions for [@cocreate](https://github.com/cocreate) libraries ([b0f7a5f](https://github.com/CoCreate-app/CoCreate-selection/commit/b0f7a5feee88b0d89443d418e755fdb7ad1d6aef))
+
 ## [1.6.26](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.25...v1.6.26) (2023-06-11)
 
 
