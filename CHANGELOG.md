@@ -1,3 +1,10 @@
+## [1.6.25](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.24...v1.6.25) (2023-06-11)
+
+
+### Bug Fixes
+
+* testing workflow ([0c1fb46](https://github.com/CoCreate-app/CoCreate-selection/commit/0c1fb46d393e64ffb539e175c4820d5bf209777b))
+
 ## [1.6.24](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.23...v1.6.24) (2023-06-11)
 
 
