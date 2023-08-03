@@ -1,6 +1,6 @@
-import {cssPath, domParser} from '@cocreate/utils';
+import { cssPath, domParser } from '@cocreate/utils';
 
-String.prototype.customSplice = function(index, absIndex, string) {
+String.prototype.customSplice = function (index, absIndex, string) {
     return this.slice(0, index) + string + this.slice(index + Math.abs(absIndex));
 };
 
@@ -10,162 +10,162 @@ export function getSelection(element) {
             start: element.selectionStart,
             end: element.selectionEnd
         };
-    } 
+    }
     else {
-		let Document = element.ownerDocument;
-		let selection = Document.getSelection();
-		if (!selection.rangeCount) return { start: 0, end: 0 };
+        let Document = element.ownerDocument;
+        let selection = Document.getSelection();
+        if (!selection.rangeCount) return { start: 0, end: 0 };
 
-		let range = selection.getRangeAt(0);
+        let range = selection.getRangeAt(0);
         let start = range.startOffset;
         let end = range.endOffset;
         let previousSibling = range.startContainer.previousSibling;
-		if (element.innerHTML && previousSibling && previousSibling.nodeType == 3) {
-			let length = 0;
-			do {
-				length += previousSibling.length;
-				previousSibling = previousSibling.previousSibling;
-			} while (previousSibling);
-			start += length;
-			end += length;
-		}
-		
-		if (range.startContainer != range.endContainer) {
+        if (element.innerHTML && previousSibling && previousSibling.nodeType == 3) {
+            let length = 0;
+            do {
+                length += previousSibling.length;
+                previousSibling = previousSibling.previousSibling;
+            } while (previousSibling);
+            start += length;
+            end += length;
+        }
+
+        if (range.startContainer != range.endContainer) {
             // TODO: replace common ancestor value
-		}
-        let contenteditable = range.startContainer.parentElement.closest('[contenteditable][collection][document_id][name]');
-        if (contenteditable){
+        }
+        let contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][name]');
+        if (contenteditable) {
             element = contenteditable;
         }
-		let domTextEditor = element;
-		if (!domTextEditor.htmlString){
-			domTextEditor = element.closest('[contenteditable]');
-		}
-		let elementStart = start, elementEnd = end;
-		if (domTextEditor && domTextEditor.htmlString){
-            let nodePos = getStringPosition({ string: domTextEditor.htmlString, target: range.startContainer.parentElement, position: 'afterbegin'});
-            if (nodePos){
+        let domTextEditor = element;
+        if (!domTextEditor.htmlString) {
+            domTextEditor = element.closest('[contenteditable]');
+        }
+        let elementStart = start, elementEnd = end;
+        if (domTextEditor && domTextEditor.htmlString) {
+            let nodePos = getStringPosition({ string: domTextEditor.htmlString, target: range.startContainer.parentElement, position: 'afterbegin' });
+            if (nodePos) {
                 elementStart = nodePos.start;
                 elementEnd = nodePos.end;
                 start = start + nodePos.start;
                 end = end + nodePos.end;
             }
-		}
-		
-		let startContainer = range.startContainer;
-		if (startContainer.nodeType == 3)
-		    startContainer = range.startContainer.parentElement;
-		
-		let endContainer = range.endContainer;
-		if (endContainer.nodeType == 3)
-		    endContainer = range.endContainer.parentElement;
+        }
+
+        let startContainer = range.startContainer;
+        if (startContainer.nodeType == 3)
+            startContainer = range.startContainer.parentElement;
+
+        let endContainer = range.endContainer;
+        if (endContainer.nodeType == 3)
+            endContainer = range.endContainer.parentElement;
 
         let rangeObj = {
             element: contenteditable,
             // domTextEditor,
-        	startOffset: range.startOffset, 
-        	endOffset: range.endOffset, 
-        	startContainer, 
-        	endContainer,
-        	elementStart,
-        	elementEnd
+            startOffset: range.startOffset,
+            endOffset: range.endOffset,
+            startContainer,
+            endContainer,
+            elementStart,
+            elementEnd
         };
-		return { start, end, range: rangeObj};
+        return { start, end, range: rangeObj };
     }
-    
+
 }
 
 export function processSelection(element, value = "", prev_start, prev_end, start, end, range) {
-	let prevStart = prev_start;
-	let prevEnd = prev_end;
-	if (prev_start >= start) {
-		if (value == "") {
-			prev_start -= end - start;
-			prev_end -= end - start;
-			prev_start = prev_start < start ? start : prev_start;
-		}
-		else {
-			prev_start += value.length;
-			prev_end += value.length;
-		}
-	} {
-		if (value == "" && prev_end >= start) {
-			prev_end = (prev_end >= end) ? prev_end - (end - start) : start;
-		}
-	}
-	if (range) {
-    	if (prevStart > prev_start){
-    	    let length = prevStart - prev_start;
-    	    if (Math.sign(length) === 1 && range.startOffset >= length)
-    	        range.startOffset -= length;
-    	}
-    	else if (prevStart < prev_start){
-    	    let length = prev_start - prevStart;
-    	    if (Math.sign(length) === 1)
-    	        if (range.startOffset == 0 || range.startOffset >= length)
-    	            range.startOffset += length;
-    	}    
-    	if (prevEnd > prev_end){
-    	    let length = prevEnd - prev_end;
-    	    if (Math.sign(length) === 1 && range.endOffset >= length)
-    	        range.endOffset -= length;
-    	}
-    	else if (prevEnd < prev_end){
-    	    let length = prev_end - prevEnd;
-    	    if (Math.sign(length) === 1)
-    	        if (range.endOffset == 0 || range.endOffset >= length)
-    	            range.endOffset += length;
-    	}
-	}  
-	    
+    let prevStart = prev_start;
+    let prevEnd = prev_end;
+    if (prev_start >= start) {
+        if (value == "") {
+            prev_start -= end - start;
+            prev_end -= end - start;
+            prev_start = prev_start < start ? start : prev_start;
+        }
+        else {
+            prev_start += value.length;
+            prev_end += value.length;
+        }
+    } {
+        if (value == "" && prev_end >= start) {
+            prev_end = (prev_end >= end) ? prev_end - (end - start) : start;
+        }
+    }
+    if (range) {
+        if (prevStart > prev_start) {
+            let length = prevStart - prev_start;
+            if (Math.sign(length) === 1 && range.startOffset >= length)
+                range.startOffset -= length;
+        }
+        else if (prevStart < prev_start) {
+            let length = prev_start - prevStart;
+            if (Math.sign(length) === 1)
+                if (range.startOffset == 0 || range.startOffset >= length)
+                    range.startOffset += length;
+        }
+        if (prevEnd > prev_end) {
+            let length = prevEnd - prev_end;
+            if (Math.sign(length) === 1 && range.endOffset >= length)
+                range.endOffset -= length;
+        }
+        else if (prevEnd < prev_end) {
+            let length = prev_end - prevEnd;
+            if (Math.sign(length) === 1)
+                if (range.endOffset == 0 || range.endOffset >= length)
+                    range.endOffset += length;
+        }
+    }
+
     setSelection(element, prev_start, prev_end, range);
-    return {element, value, start, end, prev_start, prev_end};
+    return { element, value, start, end, prev_start, prev_end };
 }
 
 export function setSelection(element, start, end, range) {
     if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
         element.selectionStart = start;
         element.selectionEnd = end;
-    } 
+    }
     else {
         if (!range) return;
-    	let Document = element.ownerDocument;
+        let Document = element.ownerDocument;
 
-		let startContainer = getContainer(range.startContainer, range.startOffset);
-		let endContainer = getContainer(range.endContainer, range.endOffset);
+        let startContainer = getContainer(range.startContainer, range.startOffset);
+        let endContainer = getContainer(range.endContainer, range.endOffset);
 
-    	if (!startContainer || !endContainer) 
-    	    return;
-    	    
-    	let selection = Document.getSelection();
-    	selection.removeAllRanges();
-		
-		const newRange = Document.createRange();
-		newRange.setStart(startContainer, range.startOffset);
-		newRange.setEnd(endContainer, range.endOffset);
-	    
-	    selection.addRange(newRange);
-	}
+        if (!startContainer || !endContainer)
+            return;
+
+        let selection = Document.getSelection();
+        selection.removeAllRanges();
+
+        const newRange = Document.createRange();
+        newRange.setStart(startContainer, range.startOffset);
+        newRange.setEnd(endContainer, range.endOffset);
+
+        selection.addRange(newRange);
+    }
 }
 
-function getContainer(element, offset){
-	let nodeLengths = 0;
-	for (let node of element.childNodes){
-		if (node.nodeType == 3) {
-			let length = node.length + nodeLengths;
-			if (length >= offset)
-				return node;
-			else
-				nodeLengths += length;
-		}
-	}
+function getContainer(element, offset) {
+    let nodeLengths = 0;
+    for (let node of element.childNodes) {
+        if (node.nodeType == 3) {
+            let length = node.length + nodeLengths;
+            if (length >= offset)
+                return node;
+            else
+                nodeLengths += length;
+        }
+    }
 }
 
 export function hasSelection(el) {
-	let { start, end } = getSelection(el);
-	if (start != end) {
-		return true;
-	}
+    let { start, end } = getSelection(el);
+    if (start != end) {
+        return true;
+    }
 }
 
 export function getElementPosition(str, start, end) {
@@ -190,11 +190,11 @@ export function getElementPosition(str, start, end) {
             type = 'insertAdjacent';
             if (!position)
                 type = 'textNode';
-            if (position == 'beforeend' && findEl.previousSibling && findEl.previousSibling.nodeType == 3 )
+            if (position == 'beforeend' && findEl.previousSibling && findEl.previousSibling.nodeType == 3)
                 type = 'textNode';
             if (type == 'textNode' || position == 'afterbegin')
                 nodeStart = start - angleEnd - 1;
-            
+
             findEl.remove();
         }
     }
@@ -245,7 +245,7 @@ export function getElementPosition(str, start, end) {
             }
         }
     }
-    
+
     if (element) {
         response.element = element;
         response.path = cssPath(element);
@@ -258,7 +258,7 @@ export function getElementPosition(str, start, end) {
     return response;
 }
 
-function getInsertPosition(element){
+function getInsertPosition(element) {
     let target, position;
     let previousSibling = element.previousSibling;
     let nextSibling = element.nextSibling;
@@ -287,15 +287,15 @@ function getInsertPosition(element){
         target = element.parentElement;
         position = 'afterbegin';
     }
-    return {target, position};
+    return { target, position };
 }
 
-export function getStringPosition({string, target, position, attribute, property, value, remove}) {
+export function getStringPosition({ string, target, position, attribute, property, value, remove }) {
     try {
         let element;
         let selector = cssPath(target, '[contenteditable]');
         let dom = domParser(string);
-        if (!selector.includes('[eid=') && dom.tagName == "DOM-PARSER"){
+        if (!selector.includes('[eid=') && dom.tagName == "DOM-PARSER") {
             let containerEl = document.createElement('div');
             containerEl.appendChild(dom)
             selector = `dom-parser > ${selector}`
@@ -303,26 +303,26 @@ export function getStringPosition({string, target, position, attribute, property
         }
         else
             element = dom.querySelector(selector);
-        if (!element){
+        if (!element) {
             // console.log('element could not be found using selector:', selector);
             return;
         }
         let start = 0, end = 0;
-        
+
         if (position) {
             if (position == 'beforebegin')
                 start = getElFromString(dom, string, element, position, true);
             else
-            start = getElFromString(dom, string, element, position);
+                start = getElFromString(dom, string, element, position);
             end = start;
         }
         else if (attribute) {
-            if (!element.hasAttribute(attribute)){
-            	start = getElFromString(dom, string, element, 'afterbegin', true) - 1;
+            if (!element.hasAttribute(attribute)) {
+                start = getElFromString(dom, string, element, 'afterbegin', true) - 1;
                 end = start;
             }
             else {
-            	start = getElFromString(dom, string, element, 'beforebegin');
+                start = getElFromString(dom, string, element, 'beforebegin');
                 let elString = string.substring(start);
                 let attrValue = element.getAttribute(attribute);
                 let attrStart = elString.indexOf(` ${attribute}=`);
@@ -336,8 +336,8 @@ export function getStringPosition({string, target, position, attribute, property
                 }
                 else if (attribute == 'class') {
                     let [prop, val] = value.split(':');
-                    if (prop && val){
-                        if (attrValue.includes(`${prop}:`)){
+                    if (prop && val) {
+                        if (attrValue.includes(`${prop}:`)) {
                             let propStart = attrValue.indexOf(`${prop}:`);
                             let propString = attrValue.substring(propStart);
                             let propEnd = propString.indexOf(" ");
@@ -348,11 +348,11 @@ export function getStringPosition({string, target, position, attribute, property
                     }
                     if (!remove)
                         element.classList.add(value);
-                    value = element.getAttribute(attribute); 
+                    value = element.getAttribute(attribute);
                 }
                 else {
                     element.setAttribute(attribute, value);
-                    value = element.getAttribute(attribute); 
+                    value = element.getAttribute(attribute);
                 }
                 end = start + attribute.length + attrValue.length + 4;
             }
@@ -367,9 +367,9 @@ export function getStringPosition({string, target, position, attribute, property
             end = getElFromString(dom, string, element, 'afterend', true);
         }
 
-        return {start, end, newValue: value};
+        return { start, end, newValue: value };
     }
-    catch (e){
+    catch (e) {
         console.log(e);
     }
 }
@@ -379,56 +379,56 @@ function getElFromString(dom, string, element, position, isAttribute) {
     let start, angle, documentTypeAngles;
     if (position == 'afterbegin') {
         element.insertAdjacentElement('afterbegin', findEl);
-    	angle = '>';
+        angle = '>';
     }
     else if (position == 'afterend') {
         element.insertAdjacentElement('afterend', findEl);
-    	angle = '>';
+        angle = '>';
     }
-    else if (position == 'beforebegin'){
+    else if (position == 'beforebegin') {
         element.insertAdjacentElement('afterbegin', findEl);
-    	angle = '<';
-    }	
-    else if (position == 'beforeend'){
+        angle = '<';
+    }
+    else if (position == 'beforeend') {
         element.insertAdjacentElement('afterend', findEl);
-    	angle = '<';
-    }	
+        angle = '<';
+    }
     if (dom.tagName == 'HTML')
-    	start = dom.outerHTML.indexOf("<findelement></findelement>");
+        start = dom.outerHTML.indexOf("<findelement></findelement>");
     else
-    	start = dom.innerHTML.indexOf("<findelement></findelement>");
-    
-    if (start == -1){
+        start = dom.innerHTML.indexOf("<findelement></findelement>");
+
+    if (start == -1) {
         position = 'singleton';
         element.insertAdjacentElement('afterend', findEl);
         if (dom.tagName == 'HTML')
-        	start = dom.outerHTML.indexOf("<findelement></findelement>");
+            start = dom.outerHTML.indexOf("<findelement></findelement>");
         else
-        	start = dom.innerHTML.indexOf("<findelement></findelement>");
+            start = dom.innerHTML.indexOf("<findelement></findelement>");
     }
-    
+
     findEl.remove();
-    
+
     let domString = dom.outerHTML.substring(0, start);
 
     if (dom.tagName == "HTML") {
-    	let htmlIndex = string.indexOf('<html');
-    	let documentType = string.substring(0, htmlIndex);
-    	documentTypeAngles = documentType.split(angle).length -1;
+        let htmlIndex = string.indexOf('<html');
+        let documentType = string.substring(0, htmlIndex);
+        documentTypeAngles = documentType.split(angle).length - 1;
     }
     let angles = domString.split(angle);
     let angleLength = angles.length - 1;
     if (documentTypeAngles)
-    	angleLength += documentTypeAngles;
+        angleLength += documentTypeAngles;
     let elStart = getPosition(string, angle, angleLength);
-   
-    if (position == 'afterbegin') 
+
+    if (position == 'afterbegin')
         elStart += 1;
     else if (position == 'beforeend')
         elStart += 1;
-    else if (position == 'afterend') 
+    else if (position == 'afterend')
         elStart += 1;
-    else if (position == 'singleton'){ 
+    else if (position == 'singleton') {
         let newString = string.substring(0, elStart);
         if (newString.lastIndexOf('/') == newString.length - 1 && isAttribute)
             elStart;
@@ -446,4 +446,4 @@ function getPosition(string, subString, index) {
     // return string.split(subString, index).join(subString).length;
 }
 
-export default {getSelection, setSelection, hasSelection, processSelection, getStringPosition, getElementPosition};
+export default { getSelection, setSelection, hasSelection, processSelection, getStringPosition, getElementPosition };
