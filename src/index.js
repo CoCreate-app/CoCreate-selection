@@ -33,7 +33,7 @@ export function getSelection(element) {
         if (range.startContainer != range.endContainer) {
             // TODO: replace common ancestor value
         }
-        let contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][name]');
+        let contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key]');
         if (contenteditable) {
             element = contenteditable;
         }
