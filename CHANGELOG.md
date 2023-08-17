@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.7.0...v1.8.0) (2023-08-17)
+
+
+### Features
+
+* bump cocreate dependencies for the latest updates and features ([e3108fa](https://github.com/CoCreate-app/CoCreate-selection/commit/e3108fa01a3d85b521bbe8183020d3e6b5626c7c))
+
 # [1.7.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.6.28...v1.7.0) (2023-08-16)
 
 
