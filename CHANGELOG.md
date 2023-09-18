@@ -1,3 +1,11 @@
+## [1.9.2](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.1...v1.9.2) (2023-09-18)
+
+
+### Bug Fixes
+
+*  Add path and pathname ([8577c43](https://github.com/CoCreate-app/CoCreate-selection/commit/8577c43f7a15bf3aae3f3857bfa59e619e332fe6))
+* Update CoCreate depndencies to latest versions ([cfc6b6c](https://github.com/CoCreate-app/CoCreate-selection/commit/cfc6b6c714124663f311c85eb4d2551a45c72eaf))
+
 ## [1.9.1](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.0...v1.9.1) (2023-08-21)
 
 
