@@ -1,3 +1,11 @@
+## [1.9.7](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.6...v1.9.7) (2023-11-03)
+
+
+### Bug Fixes
+
+* favicon.ico path ([948681b](https://github.com/CoCreate-app/CoCreate-selection/commit/948681b0b58c17d9408223d7a2e1f0e048a98143))
+* update dependencies to the lates versions ([6cb3e04](https://github.com/CoCreate-app/CoCreate-selection/commit/6cb3e046c2a795302a1defafd4ee47e92a0b5c55))
+
 ## [1.9.6](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.5...v1.9.6) (2023-10-25)
 
 
