@@ -1,3 +1,11 @@
+## [1.9.8](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.7...v1.9.8) (2023-11-09)
+
+
+### Bug Fixes
+
+* meta name typo ([8aad68f](https://github.com/CoCreate-app/CoCreate-selection/commit/8aad68fa74f2354ed2c2f88a4bf9fd0ce59cf1b4))
+* update host ([2c840d9](https://github.com/CoCreate-app/CoCreate-selection/commit/2c840d900607acc89425c1948783981134e677d1))
+
 ## [1.9.7](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.6...v1.9.7) (2023-11-03)
 
 
