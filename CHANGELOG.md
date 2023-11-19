@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.9...v1.10.0) (2023-11-19)
+
+
+### Features
+
+* update dependecies for th latest features and bug fixes ([ba6622f](https://github.com/CoCreate-app/CoCreate-selection/commit/ba6622f05ad769059ca4f8106418534507d63f1f))
+
 ## [1.9.9](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.8...v1.9.9) (2023-11-12)
 
 
