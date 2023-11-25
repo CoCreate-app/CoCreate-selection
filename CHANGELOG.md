@@ -1,3 +1,15 @@
+# [1.11.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.10.0...v1.11.0) (2023-11-25)
+
+
+### Bug Fixes
+
+* update nav, edit button and css path ([a3d312d](https://github.com/CoCreate-app/CoCreate-selection/commit/a3d312d6f4dfaff8a42d99aef757f1d6bc10a653))
+
+
+### Features
+
+* upgrade dependencies for latest features and fixes ([d9647cb](https://github.com/CoCreate-app/CoCreate-selection/commit/d9647cb72f79b5fc2326b73fd33c63b50e0fa739))
+
 # [1.10.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.9.9...v1.10.0) (2023-11-19)
 
 
