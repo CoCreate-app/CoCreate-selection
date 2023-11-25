@@ -6,7 +6,7 @@ A simple selection component in vanilla javascript. Easily configured using HTML
 ![gzip file size in bytes](https://img.badgesize.io/https://cdn.cocreate.app/selection/latest/CoCreate-selection.min.js?compression=gzip&style=flat-square&label=gzip&color=yellow)
 ![brotlifile size in bytes](https://img.badgesize.io/https://cdn.cocreate.app/selection/latest/CoCreate-selection.min.js?compression=brotli&style=flat-square&label=brotli)
 ![GitHub latest release](https://img.shields.io/github/v/release/CoCreate-app/CoCreate-selection?style=flat-square)
-![GitHub contributors](https://img.shields.io/github/contributors/CoCreate-app/CoCreate-metrics-server?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/CoCreate-app/CoCreate-selection?style=flat-square)
 ![License](https://img.shields.io/static/v1?style=flat-square&label=license&message=AGPL-3.0&color=green)
 ![GitHub](https://img.shields.io/static/v1?style=flat-square&label=&message=Hiring&color=blueviolet)
 
