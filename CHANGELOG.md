@@ -1,3 +1,15 @@
+# [1.12.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.11.0...v1.12.0) (2023-11-25)
+
+
+### Bug Fixes
+
+* update licensing details ([dafef4f](https://github.com/CoCreate-app/CoCreate-selection/commit/dafef4f215344eef2ff6f52302cab2a0b6808d57))
+
+
+### Features
+
+* upgrade dependencies for latest features and fixes ([c9816e2](https://github.com/CoCreate-app/CoCreate-selection/commit/c9816e263f825c95eb26cf22c37f1b79950400ba))
+
 # [1.11.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.10.0...v1.11.0) (2023-11-25)
 
 
