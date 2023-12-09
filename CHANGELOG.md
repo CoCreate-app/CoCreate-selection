@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.12.0...v1.12.1) (2023-12-09)
+
+
+### Bug Fixes
+
+* typo ([c3ff3f4](https://github.com/CoCreate-app/CoCreate-selection/commit/c3ff3f499f208c4cb7be5d3606031be135953499))
+
 # [1.12.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.11.0...v1.12.0) (2023-11-25)
 
 
