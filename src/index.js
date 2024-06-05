@@ -42,14 +42,6 @@ export function getSelection(element) {
                     let nodePos = getStringPosition({ string: domTextEditor.htmlString, target: previousSibling, position: 'afterend' });
                     if (nodePos) {
                         length = nodePos.end;
-
-                        // const htmlPart = domTextEditor.htmlString.slice(0, start + nodePos.end);
-                        // const tempElement = document.createElement('div');
-                        // tempElement.innerHTML = htmlPart;
-                        // const textOnly = tempElement.innerText || tempElement.textContent;
-                        // length = textOnly.length;
-
-                        console.log('end', length)
                     }
                     previousSibling = null;
                 } else if (previousSibling.nodeType === 3) {
@@ -57,11 +49,9 @@ export function getSelection(element) {
                     previousSibling = previousSibling.previousSibling;
                 }
             } while (previousSibling);
-            console.log('start: ', start, 'end: ', end)
 
             start += length;
             end += length;
-            console.log('start: ', start, 'end: ', end)
         }
 
         let elementStart = start, elementEnd = end;
@@ -150,8 +140,10 @@ export function setSelection(element, start, end, range) {
         if (!range) return;
         let Document = element.ownerDocument;
 
-        let startContainer = getContainer(range.startContainer, range.startOffset);
-        let endContainer = getContainer(range.endContainer, range.endOffset);
+        let startContainer = getContainer(range.startContainer, range.elementStart);
+        let endContainer = getContainer(range.endContainer, range.elementEnd);
+        // let startContainer = getContainer(range.startContainer, range.startOffset);
+        // let endContainer = getContainer(range.endContainer, range.endOffset);
 
         if (!startContainer || !endContainer)
             return;
@@ -160,6 +152,8 @@ export function setSelection(element, start, end, range) {
         selection.removeAllRanges();
 
         const newRange = Document.createRange();
+        // newRange.setStart(startContainer, range.elementStart);
+        // newRange.setEnd(endContainer, range.elementEnd);
         newRange.setStart(startContainer, range.startOffset);
         newRange.setEnd(endContainer, range.endOffset);
 
@@ -428,8 +422,8 @@ function getElFromString(dom, string, element, position, isAttribute) {
     }
     let angles = domString.split(angle);
     let angleLength = angles.length - 1;
-    if (position == 'afterend')
-        angleLength += 1;
+    // if (position == 'afterend')
+    //     angleLength += 1;
     if (documentTypeAngles)
         angleLength += documentTypeAngles;
     let elStart = getPosition(string, angle, angleLength);
