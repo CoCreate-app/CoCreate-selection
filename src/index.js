@@ -10,60 +10,31 @@ export function getSelection(element) {
             start: element.selectionStart,
             end: element.selectionEnd
         };
+
     } else {
         let Document = element.ownerDocument;
         let selection = Document.getSelection();
-        if (!selection.rangeCount) return { start: 0, end: 0 };
+        if (!selection.rangeCount)
+            return { start: 0, end: 0 };
 
         let range = selection.getRangeAt(0);
-        let start = range.startOffset;
-        let end = range.endOffset;
-        let previousSibling = range.startContainer.previousSibling;
-        // if (element.innerHTML && previousSibling && previousSibling.nodeType == 3) {
 
-        if (range.startContainer != range.endContainer) {
-            // TODO: replace common ancestor value
-        }
         let contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key]');
         if (contenteditable) {
             element = contenteditable;
         }
+
         let domTextEditor = element;
         if (!domTextEditor.htmlString) {
-            domTextEditor = element.closest('[contenteditable]');
+            domTextEditor = domTextEditor.closest('[contenteditable]');
         }
 
-        if (element.innerHTML && previousSibling) {
-            let length = 0;
-            do {
-                if (previousSibling.tagName === 'CURSOR-CONTAINER')
-                    previousSibling = previousSibling.previousSibling;
-                else if (previousSibling.nodeType === 1) {
-                    let nodePos = getStringPosition({ string: domTextEditor.htmlString, target: previousSibling, position: 'afterend' });
-                    if (nodePos) {
-                        length = nodePos.end;
-                    }
-                    previousSibling = null;
-                } else if (previousSibling.nodeType === 3) {
-                    length += previousSibling.length;
-                    previousSibling = previousSibling.previousSibling;
-                }
-            } while (previousSibling);
-
-            start += length;
-            end += length;
-        }
-
-        let elementStart = start, elementEnd = end;
-        if (domTextEditor && domTextEditor.htmlString) {
-            let nodePos = getStringPosition({ string: domTextEditor.htmlString, target: range.startContainer.parentElement, position: 'afterbegin' });
-            if (nodePos) {
-                elementStart = nodePos.start;
-                elementEnd = nodePos.end;
-                start = start + nodePos.start;
-                end = end + nodePos.end;
-            }
-        }
+        let start = getNodePosition(range.startContainer, domTextEditor, range.startOffset)
+        let end = start
+        if (range.startContainer !== range.endContainer) {
+            end = getNodePosition(range.endContainer, domTextEditor, range.endOffset)
+        } else if (range.endOffset !== range.startOffset)
+            end = start + (range.endOffset - range.startOffset)
 
         let startContainer = range.startContainer;
         if (startContainer.nodeType == 3)
@@ -74,18 +45,43 @@ export function getSelection(element) {
             endContainer = range.endContainer.parentElement;
 
         let rangeObj = {
-            element: contenteditable,
-            // domTextEditor,
+            element,
+            domTextEditor,
             startOffset: range.startOffset,
             endOffset: range.endOffset,
             startContainer,
-            endContainer,
-            elementStart,
-            elementEnd
+            endContainer
         };
+        console.log('start: ', start, 'end', end)
+
         return { element: contenteditable, value: selection.toString(), start, end, range: rangeObj };
     }
 
+}
+
+
+function getNodePosition(container, domTextEditor, position) {
+    let string = domTextEditor.htmlString
+    let node = container.previousSibling
+    while (node && node.nodeType === 3) {
+        position += node.textContent.length;
+        console.log('textContent sibling: ', node.textContent.length)
+        node = node.previousSibling;
+    }
+
+    let nodePosition
+    if (node && node.nodeType === 1) {
+        nodePosition = getStringPosition({ string, target: node, position: 'afterend' });
+        console.log('nodePosition afterend: ', nodePosition)
+        position += nodePosition.end
+    } else if (container.parentElement !== domTextEditor) {
+        let parentElement = container.parentElement
+        nodePosition = getStringPosition({ string, target: parentElement, position: 'afterbegin' });
+        console.log('nodePosition afterbegin: ', nodePosition)
+        position += nodePosition.start
+    }
+
+    return position
 }
 
 export function processSelection(element, value = "", prev_start, prev_end, start, end, range) {
@@ -413,9 +409,11 @@ function getElFromString(dom, string, element, position, isAttribute) {
 
     findEl.remove();
 
-    let domString = dom.outerHTML.substring(0, start);
+    let domString = dom.innerHTML.substring(0, start);
+    // let domString = dom.outerHTML.substring(0, start);
 
     if (dom.tagName == "HTML") {
+        domString = dom.outerHTML.substring(0, start);
         let htmlIndex = string.indexOf('<html');
         let documentType = string.substring(0, htmlIndex);
         documentTypeAngles = documentType.split(angle).length - 1;
