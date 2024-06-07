@@ -44,13 +44,26 @@ export function getSelection(element) {
         if (endContainer.nodeType == 3)
             endContainer = range.endContainer.parentElement;
 
+        let textStart = 0, node = range.startContainer
+        while (node) {
+            textStart += node.textContent.length;
+            node = node.previousSibling;
+        }
+        let textEnd = textStart + (range.endOffset - range.startOffset)
+
         let rangeObj = {
             element,
             domTextEditor,
             startOffset: range.startOffset,
             endOffset: range.endOffset,
             startContainer,
-            endContainer
+            endContainer,
+            elementStart: start,
+            elementEnd: end,
+            nodeStartContainer: range.startContainer,
+            nodeEndContainer: range.endContainer,
+            textStart,
+            textEnd
         };
 
         return { element: contenteditable, value: selection.toString(), start, end, range: rangeObj };
@@ -71,7 +84,7 @@ function getNodePosition(container, domTextEditor, position) {
     if (node && node.nodeType === 1) {
         nodePosition = getStringPosition({ string, target: node, position: 'afterend' });
         position += nodePosition.end
-    } else if (container.parentElement !== domTextEditor) {
+    } else if (container.parentElement !== domTextEditor && container !== domTextEditor) {
         let parentElement = container.parentElement
         nodePosition = getStringPosition({ string, target: parentElement, position: 'afterbegin' });
         position += nodePosition.start
@@ -132,8 +145,19 @@ export function setSelection(element, start, end, range) {
         if (!range) return;
         let Document = element.ownerDocument;
 
-        let startContainer = getContainer(range.startContainer, range.elementStart);
-        let endContainer = getContainer(range.endContainer, range.elementEnd);
+        let startContainer, endContainer
+        // if (range.startContainer.htmlString)
+        startContainer = getContainer(range.startContainer, range.textStart - range.startOffset);
+        // else
+        //     startContainer = getContainer(range.startContainer, range.startOffset);
+
+        // if (range.endContainer.htmlString)
+        endContainer = getContainer(range.endContainer, range.textEnd - range.endOffset);
+        // else
+        //     endContainer = getContainer(range.endContainer, range.endOffset);
+
+        // let startContainer = getContainer(range.startContainer, range.elementStart);
+        // let endContainer = getContainer(range.endContainer, range.elementEnd);
         // let startContainer = getContainer(range.startContainer, range.startOffset);
         // let endContainer = getContainer(range.endContainer, range.endOffset);
 
@@ -144,8 +168,7 @@ export function setSelection(element, start, end, range) {
         selection.removeAllRanges();
 
         const newRange = Document.createRange();
-        // newRange.setStart(startContainer, range.elementStart);
-        // newRange.setEnd(endContainer, range.elementEnd);
+
         newRange.setStart(startContainer, range.startOffset);
         newRange.setEnd(endContainer, range.endOffset);
 
@@ -155,14 +178,11 @@ export function setSelection(element, start, end, range) {
 
 function getContainer(element, offset) {
     let nodeLengths = 0;
-    for (let node of element.childNodes) {
-        if (node.nodeType == 3) {
-            let length = node.length + nodeLengths;
-            if (length >= offset)
-                return node;
-            else
-                nodeLengths += length;
-        }
+    let nodes = element.childNodes
+    for (let i = 0; i < nodes.length; i++) {
+        nodeLengths += nodes[i].textContent.length
+        if (nodeLengths >= offset)
+            return nodes[i];
     }
 }
 
