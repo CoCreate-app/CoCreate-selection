@@ -52,7 +52,6 @@ export function getSelection(element) {
             startContainer,
             endContainer
         };
-        console.log('start: ', start, 'end', end)
 
         return { element: contenteditable, value: selection.toString(), start, end, range: rangeObj };
     }
@@ -65,19 +64,16 @@ function getNodePosition(container, domTextEditor, position) {
     let node = container.previousSibling
     while (node && node.nodeType === 3) {
         position += node.textContent.length;
-        console.log('textContent sibling: ', node.textContent.length)
         node = node.previousSibling;
     }
 
     let nodePosition
     if (node && node.nodeType === 1) {
         nodePosition = getStringPosition({ string, target: node, position: 'afterend' });
-        console.log('nodePosition afterend: ', nodePosition)
         position += nodePosition.end
     } else if (container.parentElement !== domTextEditor) {
         let parentElement = container.parentElement
         nodePosition = getStringPosition({ string, target: parentElement, position: 'afterbegin' });
-        console.log('nodePosition afterbegin: ', nodePosition)
         position += nodePosition.start
     }
 
