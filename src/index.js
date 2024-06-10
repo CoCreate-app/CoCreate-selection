@@ -22,12 +22,13 @@ export function getSelection(element) {
         let contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key]');
         if (contenteditable) {
             element = contenteditable;
-        }
+        } else return
 
         let domTextEditor = element;
         if (!domTextEditor.htmlString) {
             domTextEditor = domTextEditor.closest('[contenteditable]');
         }
+
 
         let start = getNodePosition(range.startContainer, domTextEditor, range.startOffset)
         let end = start
