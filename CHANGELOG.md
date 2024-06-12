@@ -1,3 +1,21 @@
+# [1.13.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.12.2...v1.13.0) (2024-06-12)
+
+
+### Bug Fixes
+
+* bump cocreate dependencies ([338178a](https://github.com/CoCreate-app/CoCreate-selection/commit/338178a59acee9ac267c33e089388ee819220e79))
+* conteneditable start end across multiple nodes ([ab1d6e2](https://github.com/CoCreate-app/CoCreate-selection/commit/ab1d6e2c5a8b00811e400e25550876c6a264ffe5))
+* remove testing logs ([910e3ff](https://github.com/CoCreate-app/CoCreate-selection/commit/910e3ff5d08d843c4bdff28b7842f54c8358c61d))
+* removed testing logs ([b2cf244](https://github.com/CoCreate-app/CoCreate-selection/commit/b2cf24406c14437f4c9082288649b890f52df51b))
+* return if contenteditable not found ([8ecf10e](https://github.com/CoCreate-app/CoCreate-selection/commit/8ecf10e180ab46e2d36a7a435369201f0d71bc91))
+* svg icon class ([20641ff](https://github.com/CoCreate-app/CoCreate-selection/commit/20641ff0426aa898153d99679069db01332f774e))
+* textnode handling ([e22af17](https://github.com/CoCreate-app/CoCreate-selection/commit/e22af17799699d596c83b0974d3d9187fbc51f23))
+
+
+### Features
+
+* parse text to reset selection ([7c367bb](https://github.com/CoCreate-app/CoCreate-selection/commit/7c367bbeccdaf07dfdec64d0811f5e5bd41fecb9))
+
 ## [1.12.2](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.12.1...v1.12.2) (2024-04-29)
 
 
