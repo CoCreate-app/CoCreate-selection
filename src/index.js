@@ -19,7 +19,12 @@ export function getSelection(element) {
 
         let range = selection.getRangeAt(0);
 
-        let contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key]');
+        let contenteditable
+        if (range.startContainer.nodeType === 3)
+            contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key]');
+        else
+            contenteditable = range.startContainer.closest('[contenteditable][array][object][key]');
+
         if (contenteditable) {
             element = contenteditable;
         } else return
@@ -48,7 +53,10 @@ export function getSelection(element) {
         let textStart = 0, node = range.startContainer
         while (node) {
             textStart += node.textContent.length;
-            node = node.previousSibling;
+            if (node === contenteditable)
+                node = undefined
+            else
+                node = node.previousSibling;
         }
         let textEnd = textStart + (range.endOffset - range.startOffset)
 
@@ -75,6 +83,8 @@ export function getSelection(element) {
 
 function getNodePosition(container, domTextEditor, position) {
     let string = domTextEditor.htmlString
+    if (!string)
+        return 0
     let node = container.previousSibling
     while (node && node.nodeType === 3) {
         position += node.textContent.length;
