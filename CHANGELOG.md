@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.13.0...v1.13.1) (2024-06-23)
+
+
+### Bug Fixes
+
+* handling empty contenteditable positioning and ensure parsing and positioning only incudes the contentedible elements content ([924bc45](https://github.com/CoCreate-app/CoCreate-selection/commit/924bc45e13d47d2a750ec2715a5b0ead9276f0ac))
+
 # [1.13.0](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.12.2...v1.13.0) (2024-06-12)
 
 
