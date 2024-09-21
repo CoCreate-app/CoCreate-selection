@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.13.1...v1.13.2) (2024-09-21)
+
+
+### Bug Fixes
+
+* selection returns start and end ([80f91c9](https://github.com/CoCreate-app/CoCreate-selection/commit/80f91c944e55013fd6c0e3a1eb19052fafc08c47))
+
 ## [1.13.1](https://github.com/CoCreate-app/CoCreate-selection/compare/v1.13.0...v1.13.1) (2024-06-23)
 
 
