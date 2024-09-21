@@ -27,7 +27,7 @@ export function getSelection(element) {
 
         if (contenteditable) {
             element = contenteditable;
-        } else return
+        } else return { start: range.startOffset, end: range.endOffset }
 
         let domTextEditor = element;
         if (!domTextEditor.htmlString) {
