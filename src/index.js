@@ -10,7 +10,6 @@ export function getSelection(element) {
             start: element.selectionStart,
             end: element.selectionEnd
         };
-
     } else {
         let Document = element.ownerDocument;
         let selection = Document.getSelection();
@@ -21,9 +20,9 @@ export function getSelection(element) {
 
         let contenteditable
         if (range.startContainer.nodeType === 3)
-            contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key]');
+            contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key], html[contenteditable]');
         else
-            contenteditable = range.startContainer.closest('[contenteditable][array][object][key]');
+            contenteditable = range.startContainer.closest('[contenteditable][array][object][key], html[contenteditable]');
 
         if (contenteditable) {
             element = contenteditable;
