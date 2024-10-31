@@ -5,102 +5,111 @@ String.prototype.customSplice = function (index, absIndex, string) {
 };
 
 export function getSelection(element) {
-    if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-        return {
-            start: element.selectionStart,
-            end: element.selectionEnd
-        };
-    } else {
-        let Document = element.ownerDocument;
-        let selection = Document.getSelection();
-        if (!selection.rangeCount)
-            return { start: 0, end: 0 };
+    try {
+        if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+            return {
+                start: element.selectionStart,
+                end: element.selectionEnd
+            };
+        } else {
+            let Document = element.ownerDocument;
+            let selection = Document.getSelection();
+            if (!selection.rangeCount)
+                return { start: 0, end: 0 };
 
-        let range = selection.getRangeAt(0);
+            let range = selection.getRangeAt(0);
 
-        let contenteditable
-        if (range.startContainer.nodeType === 3)
-            contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key], html[contenteditable]');
-        else
-            contenteditable = range.startContainer.closest('[contenteditable][array][object][key], html[contenteditable]');
-
-        if (contenteditable) {
-            element = contenteditable;
-        } else return { start: range.startOffset, end: range.endOffset }
-
-        let domTextEditor = element;
-        if (!domTextEditor.htmlString) {
-            domTextEditor = domTextEditor.closest('[contenteditable]');
-        }
-
-
-        let start = getNodePosition(range.startContainer, domTextEditor, range.startOffset)
-        let end = start
-        if (range.startContainer !== range.endContainer) {
-            end = getNodePosition(range.endContainer, domTextEditor, range.endOffset)
-        } else if (range.endOffset !== range.startOffset)
-            end = start + (range.endOffset - range.startOffset)
-
-        let startContainer = range.startContainer;
-        if (startContainer.nodeType == 3)
-            startContainer = range.startContainer.parentElement;
-
-        let endContainer = range.endContainer;
-        if (endContainer.nodeType == 3)
-            endContainer = range.endContainer.parentElement;
-
-        let textStart = 0, node = range.startContainer
-        while (node) {
-            textStart += node.textContent.length;
-            if (node === contenteditable)
-                node = undefined
+            let contenteditable
+            if (range.startContainer.nodeType === 3)
+                contenteditable = range.startContainer.parentElement.closest('[contenteditable][array][object][key], html[contenteditable]');
             else
-                node = node.previousSibling;
+                contenteditable = range.startContainer.closest('[contenteditable][array][object][key], html[contenteditable]');
+
+            if (contenteditable) {
+                element = contenteditable;
+            } else return { start: range.startOffset, end: range.endOffset }
+
+            let domTextEditor = element;
+            if (!domTextEditor.htmlString) {
+                domTextEditor = domTextEditor.closest('[contenteditable]');
+            }
+
+
+            let start = getNodePosition(range.startContainer, domTextEditor, range.startOffset)
+            let end = start
+            if (range.startContainer !== range.endContainer) {
+                end = getNodePosition(range.endContainer, domTextEditor, range.endOffset)
+            } else if (range.endOffset !== range.startOffset)
+                end = start + (range.endOffset - range.startOffset)
+
+            let startContainer = range.startContainer;
+            if (startContainer.nodeType == 3)
+                startContainer = range.startContainer.parentElement;
+
+            let endContainer = range.endContainer;
+            if (endContainer.nodeType == 3)
+                endContainer = range.endContainer.parentElement;
+
+            let textStart = 0, node = range.startContainer
+            while (node) {
+                textStart += node.textContent.length;
+                if (node === contenteditable)
+                    node = undefined
+                else
+                    node = node.previousSibling;
+            }
+            let textEnd = textStart + (range.endOffset - range.startOffset)
+
+            let rangeObj = {
+                element,
+                domTextEditor,
+                startOffset: range.startOffset,
+                endOffset: range.endOffset,
+                startContainer,
+                endContainer,
+                elementStart: start,
+                elementEnd: end,
+                nodeStartContainer: range.startContainer,
+                nodeEndContainer: range.endContainer,
+                textStart,
+                textEnd
+            };
+
+            return { element: contenteditable, value: selection.toString(), start, end, range: rangeObj };
         }
-        let textEnd = textStart + (range.endOffset - range.startOffset)
-
-        let rangeObj = {
-            element,
-            domTextEditor,
-            startOffset: range.startOffset,
-            endOffset: range.endOffset,
-            startContainer,
-            endContainer,
-            elementStart: start,
-            elementEnd: end,
-            nodeStartContainer: range.startContainer,
-            nodeEndContainer: range.endContainer,
-            textStart,
-            textEnd
-        };
-
-        return { element: contenteditable, value: selection.toString(), start, end, range: rangeObj };
+    } catch (error) {
+        console.error("Error fetching selection from element:", error);
     }
-
 }
 
 
 function getNodePosition(container, domTextEditor, position) {
-    let string = domTextEditor.htmlString
-    if (!string)
-        return 0
-    let node = container.previousSibling
-    while (node && node.nodeType === 3) {
-        position += node.textContent.length;
-        node = node.previousSibling;
+    try {
+        let string = domTextEditor.htmlString
+        if (!string)
+            return 0
+        let node = container.previousSibling
+        while (node && node.nodeType === 3) {
+            position += node.textContent.length;
+            node = node.previousSibling;
+        }
+
+        let nodePosition
+        if (node && node.nodeType === 1) {
+            nodePosition = getStringPosition({ string, target: node, position: 'afterend' });
+            position += nodePosition.end
+        } else if (container.parentElement !== domTextEditor && container !== domTextEditor) {
+            let parentElement = container.parentElement
+            nodePosition = getStringPosition({ string, target: parentElement, position: 'afterbegin' });
+            position += nodePosition.start
+        }
+
+        return position
+
+    } catch (error) {
+        console.error("Error getting node position:", error);
     }
 
-    let nodePosition
-    if (node && node.nodeType === 1) {
-        nodePosition = getStringPosition({ string, target: node, position: 'afterend' });
-        position += nodePosition.end
-    } else if (container.parentElement !== domTextEditor && container !== domTextEditor) {
-        let parentElement = container.parentElement
-        nodePosition = getStringPosition({ string, target: parentElement, position: 'afterbegin' });
-        position += nodePosition.start
-    }
-
-    return position
 }
 
 export function processSelection(element, value = "", prev_start, prev_end, start, end, range) {
